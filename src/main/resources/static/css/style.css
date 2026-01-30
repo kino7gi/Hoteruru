@@ -1,0 +1,54 @@
+html {
+    font-size: 14px;
+}
+
+body {
+    font-family: 'Noto Sans JP', sans-serif;
+}
+
+h1 {
+    font-size: 1.5rem;
+}
+
+a {
+    color: #5196a6;
+    text-decoration: none !important;
+}
+
+a:hover {
+    color: #407784;
+}
+
+footer {
+    width: 100%;
+    height: 60px;
+    background-color: #f2f0ed;
+}
+
+.moattravel-wrapper {
+    min-height: 100vh;
+
+}
+
+.moattravel-navbar {
+    min-height: 60px;
+}
+
+.moattravel-logo {
+    height: 30px;
+}
+
+.moattravel-btn {
+    background-color: rgb(79, 161, 166) !important;
+    color: #ffffff !important;
+}
+
+.moattravel-btn:hover {
+    opacity: 0.8;
+}
+
+@media screen and (min-width: 1400px) {
+    .moattravel-container {
+        max-width: 1200px;
+    }   
+}
