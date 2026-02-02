@@ -21,6 +21,7 @@ public class AdminHouseController {
 	public AdminHouseController(HouseRepository houseRepository) {
 		this.houseRepository = houseRepository;
 	}
+	
 	@GetMapping
 	public String index(Model model, @PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.ASC) Pageable pageable, @RequestParam(name = "keyword", required = false) String keyword) {
 	    Page<House> housePage = houseRepository.findAll(pageable);
@@ -37,6 +38,7 @@ public class AdminHouseController {
 	@GetMapping("/{id}")
 	public String show(@PathVariable(name = "id")Integer id, Model model) {
 		House house = houseRepository.getReferenceById(id);
+		model.addAttribute("house", house);
 		model.addAttribute("house", house);
 		return"admin/houses/show";
 	}
