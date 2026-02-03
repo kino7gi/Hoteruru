@@ -38,22 +38,17 @@
 		<div th:fragment="header" th:remove="tag">
 			<nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm moattravel-navbar">
 				<div class="container samuraitrabel-container">
-					<a class="navbar-brand" th:href="@{/}">
-						<img class="moattravel-logo me-1" th:src="@{/images/logo.png}" alt="moat Travel">
-					</a>
+					<a class="navbar-brand" th:href="@{/}"></a>
 				</div>
 			</nav>
 		</div>
 		
 		<!-- フッターの部品化 -->
-		
-		<div th:fragment="footer"th:remove="tag">
-			<footer>
+	<footer th:fragment="footer" class="bg-light">
 				<div class="d-flex justify-content-center align-items-center h-100">
 					<p class="text-center text-muted small mb-0">&copy; moat Travel All rights reserved.</p>
 				</div>
-			</footer>
-		</div>
+	</footer>
 		
 		<!-- script要素の部品化 -->
 		

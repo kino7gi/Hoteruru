@@ -25,47 +25,62 @@ footer {
     background-color: #f2f0ed;
 }
 
-.moattravel-wrapper {
+.samuraitrabel-wrapper {
     min-height: 100vh;
 
 }
 
-.moattravel-navbar {
+.samuraitrabel-navbar {
     min-height: 60px;
 }
 
-.moattravel-logo {
+.samuraitrabel-logo {
     height: 30px;
 }
 
-.moattravel-btn {
-    background-color: rgb(79, 161, 166) !important;
+.samuraitrabel-btn {
+    background-color: rgb(178, 224, 223) !important;
     color: #ffffff !important;
 }
 
-.moattravel-btn:hover {
+.samuraitrabel-btn:hover {
     opacity: 0.8;
 }
 
-.moattravel-page-link{
+.samuraitrabel-page-link{
 	color:#5196a6;
 }
 
-.moattravel-page-link:hover{
+.samuraitrabel-page-link:hover{
 	color:#407784;
 }
 
-.moattravel-active{
+.samuraitrabel-active{
 	background-color:#5196a6 !important;
 	border-color: #5196a6 !important;
 }
 
-.moattravel-pre-wrap{
+.samuraitrabel-pre-wrap{
+	/*改行文字で行を折り返す*/
+	
 	white-space: pre-wrap;
+}
+.samuraitrabel-link-danger{
+	color:#f2594b;
+}
+.samuraitrabel-link-danger:hover{
+	color:#a63c3c;
+}
+.samuraitrabel-btn-danger{
+	background-color:#f2594b !important;
+	transition:0.1;
+}
+.samuraitrabel-btn-danger:hover{
+	opacity:0.8;	
 }
 
 @media screen and (min-width: 1400px) {
-    .moattravel-container {
+    .samuraitrabel-container {
         max-width: 1200px;
     }   
 }

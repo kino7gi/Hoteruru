@@ -1,64 +1,61 @@
 <!DOCTYPE html>
-<html> xmlns:th="https://www.thymeleaf.org">
+<html xmlns:th="https://www.thymeleaf.org">
 	<head>
-		<div th:replace="~{fragment::meta}"></div>
+		<div th:replace="~{fragment :: meta}"></div>
 		<div th:replace="~{fragment :: styles}"></div>
 		
 		<title>民宿登録</title>
 	</head>
-	<body>
-		<body class="moattravel-wrapper">
+		<body class="samuraitrabel-wrapper">
 			
 			<!-- ヘッダー -->
 			
 			<div th:replace="~{fragment::header}"></div>
 			<main>
-				<div class="container pt-4 pb-5 moattravel-container">
+				<div class="container pt-4 pb-5 samuraitrabel-container">
 					<div class="row justify-content-center">
 						<div class="col-xl-5 col-lg-6 col-md-8">
 							<nav class="mb-4" style="--bs-breadcrumb-divider:'>';"aria-label="breadcrumb">
-								<ol class="breadcrumb">
+								<ol class="breadcrumb mb-0">
 									<li class="breadcrumb-item"><a th:href="@{/admin/houses}">民宿一覧</a></li>
 									<li class="breadcrumb-item active" aria-current="page">民宿登録</li>
 								</ol>
 							</nav>
 							<h1 class="mb-4 text-center">民宿登録</h1>
-							<form method="post" th:action="@{/admin/houses/create}"th:object"=${houseRegisterForm}" enctype="multipart/form/data">
-								<div class="form-group rouw mb-3">
+							<form method="post" th:action="@{/admin/houses/create}" th:object="${houseRegisterForm}" enctype="multipart/form-data">
+								<div class="form-group row mb-3">
 									<div class="col-md-4">
-										<label for="name"class="col-form-label- text-md-left fw-bold">民宿名
-											
-										</label>
+										<label for="name"class="col-form-label text-md-left fw-bold">民宿名</label>
 									</div>
 									<div class="col-md-8">
-										<div th:if="${#fields.hasErrors('name')}" class="text-danger small mb-2"th:errors="*{name}">
-											<input type="text" class="form-control" th:field="*{name}" autofocus>
-										</div>
-									</div>
-									<div class="form-grup row mb-3">
+										<div th:if="${#fields.hasErrors('name')}" class="text-danger small mb-2"th:errors="*{name}"></div>
+											<input type="text" class="form-control" th:field="*{name}" autofocus></div>
+									<div class="form-group row mb-3">
 										<div class="col-md-4">
 											<label for="imageFile" class="col-form-label text-md-left fw-bold">民宿画像</label>
 										</div>
 										<div class="col-md-8">
-										<div th:if="${#fields.hasErrors('imageFile')}" class="text-danger small mb-2" th:errors="*{imageFile}">
+										<div th:if="${#fields.hasErrors('imageFile')}" class="text-danger small mb-2" th:errors="*{imageFile}"></div>
 											<input type="file" class="form-control" th:field="*{imageFile}">
 										</div>	
-										</div>
+									</div>
 										
 										<!-- 選択された画像の表示場所 -->
 										
-										<div class="row"id="imagePreview">
+										<div class="row"id="imagePreview"></div>
 											<div class="form-group row mb-3">
-												<label for="description" class="col-form-label text-md-left fw-bold">説明</label>
-											</div>
+												<div class="col-md-4">
+													<label for="description" class="col-form-label text-md-left fw-bold">説明</label>
+												</div>
 											<div class="col-md-8">
 												<div th:if="${#fields.hasErrors('description')}" class="text-danger small mb-2" th:errors="*{description}"></div>
 												<textarea class="form-control" th:field="*{description}" cols="30" rows="5"></textarea>
+												</div>
 											</div>
-										</div>
-										<div class="form-grouprow mb-3">
+										<div class="form-group row mb-3">
+											<div class="col-md-4">
 											<label for="price"class="col-form-labeltext-md-left fw-bold">宿泊料金(単位：円)</label>
-										</div>
+											</div>
 										<div class="col-md-8">
 											<div th:if="${#fields.hasErrors('price')}" class="text-danger small mb-2"th:errors="*{price}"></div>
 											<input type="number" class="form-control" th:field="*{price}">
@@ -101,7 +98,7 @@
 										</div>
 									</div>
 									<div class="form-group d-flex justify-content-center my-4">
-										<button type="submit" class="btn text-white shadow-sm w-50 moattravel-btn">登録</button>
+										<button type="submit" class="btn text-white shadow-sm w-50 samuraitrabel-btn">登録</button>
 									</div>
 							</form>
 						</div>
@@ -111,7 +108,8 @@
 			
 			<!-- フッター -->	
 			
-			<div th:replace="~{fragment :: scripts}"></div>
-			<script th:src="@{/js/preview.js"></script>
+        <div th:replace="~{fragment :: footer}"></div>
+        <div th:replace="~{fragment :: scripts}"></div>
+        <script th:src="@{/js/preview.js}"></script>
 	</body>
 </html>		
