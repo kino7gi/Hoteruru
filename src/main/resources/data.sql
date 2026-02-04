@@ -1,6 +1,3 @@
-INSERT IGNORE INTO roles (id, name) VALUES (1, 'ROLE_GENERAL');
-INSERT IGNORE INTO roles (id, name) VALUES (2, 'ROLE_ADMIN');
-
 INSERT IGNORE INTO houses (name, image_name, description, price, capacity, postal_code, address, phone_number) VALUES ('SAMURAIの宿', 'house01.jpg', '最寄り駅から徒歩10分。自然豊かで閑静な場所にあります。長期滞在も可能です。', 6000, 2, '073-0145', '北海道砂川市西五条南X-XX-XX', '012-345-678');
 INSERT IGNORE INTO houses (name, image_name, description, price, capacity, postal_code, address, phone_number) VALUES ('ペンション SAMURAI', 'house02.jpg', '最寄り駅から徒歩10分。自然豊かで閑静な場所にあります。長期滞在も可能です。', 7000, 3, '030-0945', '青森県青森市桜川X-XX-XX', '012-345-678');
 INSERT IGNORE INTO houses (name, image_name, description, price, capacity, postal_code, address, phone_number) VALUES ('SAMURAI荘', 'house03.jpg', '最寄り駅から徒歩10分。自然豊かで閑静な場所にあります。長期滞在も可能です。', 8000, 4, '029-5618', '岩手県和賀郡西和賀町沢内両沢X-XX-XX', '012-345-678');
@@ -58,7 +55,10 @@ INSERT IGNORE INTO houses (name, image_name, description, price, capacity, posta
 INSERT IGNORE INTO houses (name, image_name, description, price, capacity, postal_code, address, phone_number) VALUES ('ゲストハウス サムライ', 'house05.jpg', '最寄り駅から徒歩10分。自然豊かで閑静な場所にあります。長期滞在も可能です。', 10000, 6, '042-0908', '北海道函館市銅山町X-XX-XX', '012-345-678');
 INSERT IGNORE INTO houses (name, image_name, description, price, capacity, postal_code, address, phone_number) VALUES ('サムライ屋', 'house06.jpg', '最寄り駅から徒歩10分。自然豊かで閑静な場所にあります。長期滞在も可能です。', 6000, 2, '050-0061', '北海道室蘭市八丁平X-XX-XX', '012-345-678');
 
-INSERT IGNORE INTO users (name, furigana, postal_code, address, phone_number, email, password, role_id, enabled) VALUES ('侍 太郎', 'サムライ タロウ', '101-0022', '東京都千代田区神田練塀町300番地', '090-1234-5678', 'taro.samurai@example.com', 'test', 1, true);
+INSERT IGNORE INTO roles (id, name) VALUES (1, 'ROLE_GENERAL');
+INSERT IGNORE INTO roles (id, name) VALUES (2, 'ROLE_ADMIN');
+
+INSERT IGNORE INTO users (name, furigana, postal_code, address, phone_number, email, password, role_id, enabled) VALUES ('侍 太郎', 'サムライ タロウ', '101-0022', '東京都千代田区神田練塀町300番地', '090-1234-5678', 'taro.samurai@example.com', 'test', 2, true);
 INSERT IGNORE INTO users (name, furigana, postal_code, address, phone_number, email, password, role_id, enabled) VALUES ('侍 花子', 'サムライ ハナコ', '101-0022', '東京都千代田区神田練塀町300番地', '090-1234-5678', 'hanako.samurai@example.com', '$2a$10$2JNjTwZBwo7fprL2X4sv.OEKqxnVtsVQvuXDkI8xVGix.U3W5B7CO', 2, true);
 INSERT IGNORE INTO users (name, furigana, postal_code, address, phone_number, email, password, role_id, enabled) VALUES ('侍 義勝', 'サムライ ヨシカツ', '638-0644', '奈良県五條市西吉野町湯川X-XX-XX', '090-1234-5678', 'yoshikatsu.samurai@example.com', 'password', 1, false);
 INSERT IGNORE INTO users (name, furigana, postal_code, address, phone_number, email, password, role_id, enabled) VALUES ('侍 幸美', 'サムライ サチミ', '342-0006', '埼玉県吉川市南広島X-XX-XX', '090-1234-5678', 'sachimi.samurai@example.com', 'password', 1, false);
@@ -70,7 +70,3 @@ INSERT IGNORE INTO users (name, furigana, postal_code, address, phone_number, em
 INSERT IGNORE INTO users (name, furigana, postal_code, address, phone_number, email, password, role_id, enabled) VALUES ('侍 祐子', 'サムライ ユウコ', '601-0761', '京都府南丹市美山町高野X-XX-XX', '090-1234-5678', 'yuko.samurai@example.com', 'password', 1, false);
 INSERT IGNORE INTO users (name, furigana, postal_code, address, phone_number, email, password, role_id, enabled) VALUES ('侍 秋美', 'サムライ アキミ', '606-8235', '京都府京都市左京区田中西春菜町X-XX-XX', '090-1234-5678', 'akimi.samurai@example.com', 'password', 1, false);
 INSERT IGNORE INTO users (name, furigana, postal_code, address, phone_number, email, password, role_id, enabled) VALUES ('侍 信平', 'サムライ シンペイ', '673-1324', '兵庫県加東市新定X-XX-XX', '090-1234-5678', 'shinpei.samurai@example.com', 'password', 1, false); 
-
-
-
-

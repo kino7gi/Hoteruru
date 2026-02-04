@@ -30,6 +30,11 @@ public class SignupForm {
 	private String password;
 	
 	@NotBlank(message = "パスワード（確認用）を入力してください。")
-	private String passwordConfirmation;  
+	private String passwordConfirmation;
+
+	public String getPostalCode() {
+		// TODO 自動生成されたメソッド・スタブ
+		return null;
+	}  
 
 }
