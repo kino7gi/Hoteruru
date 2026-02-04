@@ -73,10 +73,14 @@ footer {
 }
 .samuraitrabel-btn-danger{
 	background-color:#f2594b !important;
-	transition:0.1;
+	transition:0.1s;
 }
 .samuraitrabel-btn-danger:hover{
 	opacity:0.8;	
+}
+
+.samuraitrabel-dropdown-item:active{
+	background-color: #5196a6;
 }
 
 @media screen and (min-width: 1400px) {
