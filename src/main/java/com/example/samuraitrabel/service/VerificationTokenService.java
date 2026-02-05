@@ -7,16 +7,16 @@ import com.example.samuraitrabel.entity.User;
 import com.example.samuraitrabel.entity.VerificationToken;
 import com.example.samuraitrabel.repository.VerificationTokenRepository;
 
-
 @Service
 
 public class VerificationTokenService {
 	private final VerificationTokenRepository verificationTokenRepository;
+
 	public VerificationTokenService(VerificationTokenRepository verificationTokenRepository) {
-		
-		this.verificationTokenRepository = verificationTokenRepository;	
+
+		this.verificationTokenRepository = verificationTokenRepository;
 	}
-	
+
 	@Transactional
 	public void create(User user, String token) {
 		VerificationToken verificationToken = new VerificationToken();
@@ -24,7 +24,7 @@ public class VerificationTokenService {
 		verificationToken.setToken(token);
 		verificationTokenRepository.save(verificationToken);
 	}
-	
+
 	//トークンの文字列で検索した結果を返す
 	public VerificationToken getVerificationToken(String token) {
 		return verificationTokenRepository.findByToken(token);

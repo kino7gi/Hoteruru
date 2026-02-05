@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.samuraitrabel.entity.House;
 
 public interface HouseRepository extends JpaRepository<House, Integer> {
-	public Page<House>findByNameLike(String keyword,org.springframework.data.domain.Pageable pageable);
-	
+	public Page<House> findByNameLike(String keyword, org.springframework.data.domain.Pageable pageable);
+
 }

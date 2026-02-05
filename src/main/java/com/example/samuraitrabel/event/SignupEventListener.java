@@ -15,15 +15,15 @@ import com.example.samuraitrabel.service.VerificationTokenService;
 public class SignupEventListener {
 	private final VerificationTokenService verificationTokenService;
 	private final JavaMailSender javaMailSender;
-	
+
 	public SignupEventListener(VerificationTokenService verificationTokenService, JavaMailSender mailSender) {
 		this.verificationTokenService = verificationTokenService;
 		this.javaMailSender = mailSender;
 	}
-	
+
 	@EventListener
-	
-	 private void onSignupEvent(SignupEvent signupEvent) {
+
+	private void onSignupEvent(SignupEvent signupEvent) {
 		User user = signupEvent.getUser();
 		String token = UUID.randomUUID().toString();
 		verificationTokenService.create(user, token);

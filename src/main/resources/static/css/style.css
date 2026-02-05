@@ -1,90 +1,94 @@
 html {
-    font-size: 14px;
+	font-size: 14px;
 }
 
 body {
-    font-family: 'Noto Sans JP', sans-serif;
+	font-family: 'Noto Sans JP', sans-serif;
 }
 
 h1 {
-    font-size: 1.5rem;
+	font-size: 1.5rem;
 }
 
 a {
-    color: #5196a6;
-    text-decoration: none !important;
+	color: #5196a6;
+	text-decoration: none !important;
 }
 
 a:hover {
-    color: #407784;
+	color: #407784;
 }
 
 footer {
-    width: 100%;
-    height: 60px;
-    background-color: #f2f0ed;
+	width: 100%;
+	height: 60px;
+	background-color: #f2f0ed;
 }
 
 .samuraitrabel-wrapper {
-    min-height: 100vh;
+	min-height: 100vh;
 
 }
 
 .samuraitrabel-navbar {
-    min-height: 60px;
+	min-height: 60px;
 }
 
 .samuraitrabel-logo {
-    height: 30px;
+	height: 30px;
 }
 
 .samuraitrabel-btn {
-    background-color: rgb(178, 224, 223) !important;
-    color: #ffffff !important;
+	background-color: rgb(178, 224, 223) !important;
+	color: #ffffff !important;
 }
 
 .samuraitrabel-btn:hover {
-    opacity: 0.8;
+	opacity: 0.8;
 }
 
-.samuraitrabel-page-link{
-	color:#5196a6;
+.samuraitrabel-page-link {
+	color: #5196a6;
 }
 
-.samuraitrabel-page-link:hover{
-	color:#407784;
+.samuraitrabel-page-link:hover {
+	color: #407784;
 }
 
-.samuraitrabel-active{
-	background-color:#5196a6 !important;
+.samuraitrabel-active {
+	background-color: #5196a6 !important;
 	border-color: #5196a6 !important;
 }
 
-.samuraitrabel-pre-wrap{
+.samuraitrabel-pre-wrap {
 	/*改行文字で行を折り返す*/
-	
+
 	white-space: pre-wrap;
 }
-.samuraitrabel-link-danger{
-	color:#f2594b;
-}
-.samuraitrabel-link-danger:hover{
-	color:#a63c3c;
-}
-.samuraitrabel-btn-danger{
-	background-color:#f2594b !important;
-	transition:0.1s;
-}
-.samuraitrabel-btn-danger:hover{
-	opacity:0.8;	
+
+.samuraitrabel-link-danger {
+	color: #f2594b;
 }
 
-.samuraitrabel-dropdown-item:active{
+.samuraitrabel-link-danger:hover {
+	color: #a63c3c;
+}
+
+.samuraitrabel-btn-danger {
+	background-color: #f2594b !important;
+	transition: 0.1s;
+}
+
+.samuraitrabel-btn-danger:hover {
+	opacity: 0.8;
+}
+
+.samuraitrabel-dropdown-item:active {
 	background-color: #5196a6;
 }
 
 @media screen and (min-width: 1400px) {
-    .samuraitrabel-container {
-        max-width: 1200px;
-    }   
+	.samuraitrabel-container {
+		max-width: 1200px;
+	}
 }

@@ -85,29 +85,32 @@ public class AdminHouseController {
 
 	public String edit(@PathVariable(name = "id") Integer id, Model model) {
 		House house = houseRepository.getReferenceById(id);
-		
+
 		//民宿画像のファイル名を取得する
 		String imageName = house.getImageName();
-		
+
 		//フォームクラスをインスタンス化する
 		HouseEditForm houseEditForm = new HouseEditForm(house.getId(), house.getName(), null, house.getDescription(),
 				house.getPrice(), house.getCapacity(), house.getPostalCode(), house.getAddress(),
 				house.getPhoneNumber());
-		
+
 		//民宿画像のファイル名をビューに渡す
 		model.addAttribute("imageName", imageName);
 		model.addAttribute("houseEditForm", houseEditForm);
 		return "admin/houses/edit";
 	}
+
 	@PostMapping("/{id}/update")
-	public String update(@ModelAttribute  @Validated HouseEditForm houseEditForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-		if(bindingResult.hasErrors()) {
+	public String update(@ModelAttribute @Validated HouseEditForm houseEditForm, BindingResult bindingResult,
+			RedirectAttributes redirectAttributes) {
+		if (bindingResult.hasErrors()) {
 			return "admin/houses/edit";
 		}
 		houseService.update(houseEditForm);
 		redirectAttributes.addFlashAttribute("successMessage", "民宿情報を編集しました。");
 		return "redirect:/admin/houses";
 	}
+
 	@PostMapping("/{id}/delete")
 	public String delete(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes) {
 		houseRepository.deleteById(id);

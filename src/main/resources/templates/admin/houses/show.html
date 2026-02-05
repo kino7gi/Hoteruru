@@ -50,7 +50,8 @@
 							</div>
 						</div>
 						<div class="mb-3">
-							<img th:if="${house.getImageName()}" th:src="@{/storage/__${house.getImageName()}__}" class="w-100" alt="民宿画像">
+							<img th:if="${house.getImageName()}" th:src="@{/storage/__${house.getImageName()}__}"
+								class="w-100" alt="民宿画像">
 							<img th:unless="${house.getImageName()}" th:src="@{/images/noImage.png}" class="w-100"
 								alt="NO IMAGE">
 						</div>
