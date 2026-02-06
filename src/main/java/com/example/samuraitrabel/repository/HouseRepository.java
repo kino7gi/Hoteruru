@@ -1,11 +1,22 @@
 package com.example.samuraitrabel.repository;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.samuraitrabel.entity.House;
 
 public interface HouseRepository extends JpaRepository<House, Integer> {
-	public Page<House> findByNameLike(String keyword, org.springframework.data.domain.Pageable pageable);
-
+	public Page<House> findByNameLike(String keyword, Pageable pageable);
+	public Page<House> findByNameLikeOrAddressLike(String nameKeyword, String addressKeyword, Pageable pageable);
+	public Page<House> findByAddressLike(String area, Pageable pageable);
+	public Page<House> findByPriceLessThanEqual(Integer price, Pageable pageable);
+	public Page<House> findByNameLikeOrAddressLikeOrderByCreatedAtDesc(String nameKeyword, String addressKeyword, Pageable pageable);
+	public Page<House> findByNameLikeOrAddressLikeOrderByPriceAsc(String nameKeyword, String addressKeyword, Pageable pageable);
+	public Page<House> findByAddressLikeOrderByCreatedAtDesc(String area, Pageable pageable);
+	public Page<House> findByAddressLikeOrderByPriceAsc(String area, Pageable pageable);
+	public Page<House> findByPriceLessThanEqualOrderByCreatedAtDesc(Integer price, Pageable pageable);
+    public Page<House> findByPriceLessThanEqualOrderByPriceAsc(Integer price, Pageable pageable);
+    public Page<House> findAllByOrderByCreatedAtDesc(Pageable pageable);
+    public Page<House> findAllByOrderByPriceAsc(Pageable pageable);
 }
