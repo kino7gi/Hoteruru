@@ -1,4 +1,5 @@
 package com.example.samuraitrabel.security;
+//ログインする時の画面の設定
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,7 +32,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 			Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
 			String roleName = user.getRole().getName(); 
 
-			authorities.add(new SimpleGrantedAuthority(roleName));
+			authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole().getName()));
 
 			return new UserDetailsImpl(user, authorities);
 		} catch (Exception e) {

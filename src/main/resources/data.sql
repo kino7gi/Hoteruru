@@ -1538,3 +1538,14 @@ VALUES
    1,
    false
 );
+INSERT IGNORE INTO reservations (house_id, user_id, checkin_date, checkout_date, number_of_people, amount) VALUES (1, 1, '2023-04-01', '2023-04-02', 2, 6000);
+INSERT IGNORE INTO reservations (house_id, user_id, checkin_date, checkout_date, number_of_people, amount) VALUES (2, 1, '2023-04-01', '2023-04-02', 3, 7000);
+INSERT IGNORE INTO reservations (house_id, user_id, checkin_date, checkout_date, number_of_people, amount) VALUES (3, 1, '2023-04-01', '2023-04-02', 4, 8000);
+INSERT IGNORE INTO reservations (house_id, user_id, checkin_date, checkout_date, number_of_people, amount) VALUES (4, 1, '2023-04-01', '2023-04-02', 5, 9000);
+INSERT IGNORE INTO reservations (house_id, user_id, checkin_date, checkout_date, number_of_people, amount) VALUES (5, 1, '2023-04-01', '2023-04-02', 6, 10000);
+INSERT IGNORE INTO reservations (house_id, user_id, checkin_date, checkout_date, number_of_people, amount) VALUES (6, 1, '2023-04-01', '2023-04-02', 2, 6000);
+INSERT IGNORE INTO reservations (house_id, user_id, checkin_date, checkout_date, number_of_people, amount) VALUES (7, 1, '2023-04-01', '2023-04-02', 3, 7000);
+INSERT IGNORE INTO reservations (house_id, user_id, checkin_date, checkout_date, number_of_people, amount) VALUES (8, 1, '2023-04-01', '2023-04-02', 4, 8000);
+INSERT IGNORE INTO reservations (house_id, user_id, checkin_date, checkout_date, number_of_people, amount) VALUES (9, 1, '2023-04-01', '2023-04-02', 5, 9000);
+INSERT IGNORE INTO reservations (house_id, user_id, checkin_date, checkout_date, number_of_people, amount) VALUES (10, 1, '2023-04-01', '2023-04-02', 6, 10000);
+INSERT IGNORE INTO reservations (house_id, user_id, checkin_date, checkout_date, number_of_people, amount) VALUES (11, 1, '2023-04-01', '2023-04-02', 2, 6000);

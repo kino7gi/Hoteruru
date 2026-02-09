@@ -1,4 +1,5 @@
 package com.example.samuraitrabel.controller;
+//ログインのための会員登録画面用
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -71,12 +72,11 @@ public class AuthController {
 		}
 
 		userService.create(signupForm);
-		redirectAttributes.addFlashAttribute("successMessage", "会員登録が完了しました。");
 		User createdUser = userService.create(signupForm);
 		String requestUrl = new String(httpServletRequest.getRequestURL());
 		signupEventPublisher.publishSignupEvent(createdUser, requestUrl);
 		redirectAttributes.addFlashAttribute("successMessage",
-				"ご入力いただいたメールアドレスに認証メールを送信しました。メールに記載されているリンクをクリックし、会員登録を完了してください。");
+				"会員登録が完了しました。ご入力いただいたメールアドレスに認証メールを送信しました。メールに記載されているリンクをクリックし、会員登録を完了してください。");
 		return "redirect:/";
 
 	}

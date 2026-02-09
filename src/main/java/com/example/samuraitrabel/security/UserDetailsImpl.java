@@ -13,9 +13,8 @@ public class UserDetailsImpl implements UserDetails {
 	private final Collection<SimpleGrantedAuthority> authorities;
 
 	public UserDetailsImpl(User user, Collection<SimpleGrantedAuthority> authorities) {
-		authorities.add(new SimpleGrantedAuthority(user.getRole().getName()));
-		this.user = user;
-		this.authorities = authorities;
+	    this.user = user;
+	    this.authorities = authorities;
 	}
 
 	public User getUser() {
