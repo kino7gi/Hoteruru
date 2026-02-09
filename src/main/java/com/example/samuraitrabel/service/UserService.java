@@ -67,12 +67,14 @@ public class UserService {
 	}
 
 	//ユーザーを有効にする
+	//AuthControllerにあるsignup/verifyがくる
 
 	@Transactional
 	public void enableUser(User user) {
-		user.setEnabled(true);
-		userRepository.save(user);
+		user.setEnabled(true);//enableフラグをtrueに
+		userRepository.save(user);//DBに保存
 	}
+	
 	//メールアドレスが変更されたかどうかをチェックする
 
 	public boolean isEmailChanged(UserEditForm userEditForm) {

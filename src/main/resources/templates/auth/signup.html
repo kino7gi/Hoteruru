@@ -1,4 +1,9 @@
 <!DOCTYPE html>
+
+<!--会員登録画面のHTML情報-->
+<!--利用者に見える入力フォーム-->
+<!--AuthControllerとつながる-->
+
 <html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
@@ -18,6 +23,13 @@
 				<div class="row justify-content-center">
 					<div class="col-xl-5 col-lg-6 col-md-8">
 						<h1 class="mb-4 text-center">会員登録</h1>
+						
+						<!--登録が終わった後にメールにURL送ってますのメッセージを出すためのもの-->
+						
+						<div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+						
+						<!--情報入力画面-->
+						
 						<form method="post" th:action="@{/signup}" th:object="${signupForm}">
 							<div class="form-group row mb-3">
 								<div class="col-md-5">

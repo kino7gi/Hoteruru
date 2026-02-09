@@ -1,5 +1,6 @@
 package com.example.samuraitrabel.form;
 
+
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.constraints.Min;

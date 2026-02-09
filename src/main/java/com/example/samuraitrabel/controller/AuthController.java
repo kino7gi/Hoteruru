@@ -1,5 +1,6 @@
 package com.example.samuraitrabel.controller;
-//ログインのための会員登録画面用
+
+//ログインのための会員登録画面用リクエスト処理
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,6 +43,7 @@ public class AuthController {
 		return "auth/login";
 	}
 
+	//signupにアクセス
 	@GetMapping("/signup")
 
 	public String singup(Model model) {
@@ -71,29 +73,31 @@ public class AuthController {
 			return "auth/signup";
 		}
 
-		userService.create(signupForm);
+		//確認メール送信箇所
 		User createdUser = userService.create(signupForm);
-		String requestUrl = new String(httpServletRequest.getRequestURL());
-		signupEventPublisher.publishSignupEvent(createdUser, requestUrl);
+		signupEventPublisher.publishSignupEvent(createdUser, httpServletRequest.getRequestURL().toString());
 		redirectAttributes.addFlashAttribute("successMessage",
 				"会員登録が完了しました。ご入力いただいたメールアドレスに認証メールを送信しました。メールに記載されているリンクをクリックし、会員登録を完了してください。");
-		return "redirect:/";
+		
+		//signup.htmlが動いて↑のメッセージが表示される
+		return "redirect:/signup";
 
 	}
 
 	@GetMapping("/signup/verify")
-	public String verify(@RequestParam(name = "token") String token, Model model) {
+	public String verify(@RequestParam(name = "token") String token, RedirectAttributes redirectAttributesl) {
 		VerificationToken verificationToken = verificationTokenService.getVerificationToken(token);
 		if (verificationToken != null) {
 			User user = verificationToken.getUser();
-			userService.enableUser(user);
+			userService.enableUser(user);//ここでトークンを有効化している
 			String successMessage = "会員登録が完了しました。";
-			model.addAttribute("successMessage", successMessage);
+			redirectAttributesl.addAttribute("successMessage", successMessage);
+			return "redirect:/login";
 		} else {
 			String errorMessage = "トークンが無効です。";
-			model.addAttribute("errorMessage", errorMessage);
+			redirectAttributesl.addAttribute("errorMessage", errorMessage);
 		}
-		return "auth/verify";
+		return "redirect:/signup";
 
 	}
 

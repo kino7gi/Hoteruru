@@ -85,9 +85,11 @@ public class HouseController {
 		return "houses/index";
 	}
 	
+	//民宿画像をタップしたあとに出る画面の動き。show.html
 	@GetMapping("/{id}")
 	public String show(@PathVariable(name = "id")Integer id, Model model) {
 		House house = houseRepository.getReferenceById(id);
+		model.addAttribute("house", house);
 		model.addAttribute("reservationInputForm", new ReservationInputForm());
 		return "houses/show";
 	}

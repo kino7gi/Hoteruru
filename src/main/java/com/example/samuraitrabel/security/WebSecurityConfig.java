@@ -13,13 +13,14 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @EnableMethodSecurity
 
+//会員登録するための画面
 public class WebSecurityConfig {
 
 	@Bean
 
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests((requests) -> requests
-				.requestMatchers("/css/**", "/images/**", "/js/**", "/storage/**", "/houses/**", "/houses/{id}",
+				.requestMatchers("/login", "/signup", "/css/**", "/images/**", "/js/**", "/storage/**", "/houses/**", "/houses/{id}",
 						"/stripe/webhook")
 				.permitAll() // すべてのユーザーにアクセスを許可するURL
 				.requestMatchers("/admin/**").hasRole("ADMIN") // 管理者にのみアクセスを許可するURL

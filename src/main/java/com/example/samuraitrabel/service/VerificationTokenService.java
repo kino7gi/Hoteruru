@@ -1,5 +1,6 @@
 package com.example.samuraitrabel.service;
 
+//メールトークンを保存する場所
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

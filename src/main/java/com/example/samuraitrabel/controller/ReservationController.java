@@ -1,5 +1,6 @@
 package com.example.samuraitrabel.controller;
 
+//予約画面の動き
 import java.time.LocalDate;
 
 import org.springframework.data.domain.Page;
@@ -84,17 +85,24 @@ public class ReservationController {
 			return "houses/show";
 		}
 		redirectAttributes.addFlashAttribute("reservationInputForm", reservationInputForm);
-		return "redirect:/houses/{id}/reservations/confirm";
+		return "redirect:/houses/" + id + "/reservations/confirm";
 	}
 
 	@GetMapping("/houses/{id}/reservations/confirm")
 	public String confirm(
 			@PathVariable(name = "id") Integer id,
-			@ModelAttribute ReservationInputForm reservationInputForm,
 			@AuthenticationPrincipal UserDetailsImpl userDetailsImpl, HttpServletRequest httpServletRequest,
 			Model model) {
 		House house = houseRepository.getReferenceById(id);
 		User user = userDetailsImpl.getUser();
+
+		//重要：リダイレクトされてきたデータを受け取る
+		ReservationInputForm reservationInputForm = (ReservationInputForm) model.getAttribute("reservationInputForm");
+
+		// データが空なら詳細画面に戻す（エラー回避）
+		if (reservationInputForm == null) {
+			return "redirect:/houses/" + id;
+		}
 
 		// チェックイン日とチェックアウト日を取得する
 		LocalDate checkinDate = reservationInputForm.getCheckinDate();

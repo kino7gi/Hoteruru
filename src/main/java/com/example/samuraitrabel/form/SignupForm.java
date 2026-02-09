@@ -1,5 +1,6 @@
 package com.example.samuraitrabel.form;
 
+//アカウントを作るためのフォーム
 import org.hibernate.validator.constraints.Length;
 
 import jakarta.validation.constraints.Email;
