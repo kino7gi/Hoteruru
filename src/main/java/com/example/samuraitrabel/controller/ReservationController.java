@@ -126,11 +126,12 @@ public class ReservationController {
 				checkoutDate.toString(),
 				reservationInputForm.getNumberOfPeople(),
 				amount);
-
+		
+		String sessionId = stripeService.createStripeSession(house.getName(), reservationRegisterForm, httpServletRequest);
+		model.addAttribute("sessionId", sessionId);
 		model.addAttribute("house", house);
 		model.addAttribute("reservationRegisterForm", reservationRegisterForm);
 
-		// 修正：resevations -> reservations, confilm -> confirm
 		return "reservations/confirm";
 	}
 
