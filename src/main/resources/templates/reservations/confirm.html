@@ -110,11 +110,11 @@
 	</div>
 
 	<div th:replace="~{fragment :: scripts}"></div>
-	
+
 	//これを読み込むことでStripe関連の処理が可能になる
-	<script src="https://js.stripe.com/v3"></script> 
-	
-	
+	<script src="https://js.stripe.com/v3"></script>
+
+
 	<script th:inline="javascript">
 		const sessionId = /*[[${sessionId}]]*/"sessionId";
 	</script>

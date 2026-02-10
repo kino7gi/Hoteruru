@@ -1,5 +1,7 @@
 package com.example.samuraitrabel.event;
 
+//メール送信機能を発生させるクラス
+//SignupEventクラスから通知を受けてメール認証用メールを送る
 import java.util.UUID;
 
 import org.springframework.context.event.EventListener;

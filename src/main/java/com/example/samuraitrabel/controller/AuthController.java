@@ -78,27 +78,26 @@ public class AuthController {
 		signupEventPublisher.publishSignupEvent(createdUser, httpServletRequest.getRequestURL().toString());
 		redirectAttributes.addFlashAttribute("successMessage",
 				"会員登録が完了しました。ご入力いただいたメールアドレスに認証メールを送信しました。メールに記載されているリンクをクリックし、会員登録を完了してください。");
-		
+
 		//signup.htmlが動いて↑のメッセージが表示される
 		return "redirect:/signup";
 
 	}
 
 	@GetMapping("/signup/verify")
-	public String verify(@RequestParam(name = "token") String token, RedirectAttributes redirectAttributesl) {
+	public String verify(@RequestParam(name = "token") String token, RedirectAttributes redirectAttributes) { // 引数名を整理
 		VerificationToken verificationToken = verificationTokenService.getVerificationToken(token);
+
 		if (verificationToken != null) {
 			User user = verificationToken.getUser();
-			userService.enableUser(user);//ここでトークンを有効化している
-			String successMessage = "会員登録が完了しました。";
-			redirectAttributesl.addAttribute("successMessage", successMessage);
+			userService.enableUser(user);
+
+			// addAttribute ではなく addFlashAttribute を使う
+			redirectAttributes.addFlashAttribute("successMessage", "会員登録が完了しました。ログインしてください。");
 			return "redirect:/login";
 		} else {
-			String errorMessage = "トークンが無効です。";
-			redirectAttributesl.addAttribute("errorMessage", errorMessage);
+			redirectAttributes.addFlashAttribute("errorMessage", "トークンが無効です。");
+			return "redirect:/signup";
 		}
-		return "redirect:/signup";
-
 	}
-
 }
