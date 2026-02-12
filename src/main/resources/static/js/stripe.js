@@ -1,9 +1,7 @@
-const stripe = Stripe('pk_test_51SyiNdAKF64NSnzIEQp8H6Q4R68aeB4F13wA5UqkBHNEjXKvv4q9tRGCoKRShgHdZup577YU2dXYqfSrrdxFHMhn00xe7WdyWj');
+const stripe = Stripe('mk_1SyiNeAKF64NSnzINTxL5DQf');
 const paymentButton = document.querySelector('#paymentButton');
 
 paymentButton.addEventListener('click', () => {
-
-	//ReserveControllerから渡されたsesstinIdを使ってStripe決済ページへ飛ばす
 	stripe.redirectToCheckout({
 		sessionId: sessionId
 	});

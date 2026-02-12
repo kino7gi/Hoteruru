@@ -7,10 +7,10 @@
 </head>
 
 <body>
-	<div class="samuraitrabel-wrapper">
+	<div class="moattravel-wrapper">
 		<div th:replace="~{fragment :: header}"></div>
 		<main>
-			<div class="container samuraitrabel-container pb-5">
+			<div class="container moattravel-container pb-5">
 				<div class="row justify-content-center">
 					<div class="col-xxl-9 col-xl-10 col-lg-11">
 						<nav class="my-3" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
@@ -54,21 +54,21 @@
 										<span th:if="${reservationPage.isFirst()}" class="page-link disabled">前</span>
 										<a th:unless="${reservationPage.isFirst()}"
 											th:href="@{/reservations(page = ${reservationPage.getNumber() - 1})}"
-											class="page-link samuraitrabel-page-link">前</a>
+											class="page-link moattravel-page-link">前</a>
 									</li>
 									<li th:each="i : ${#numbers.sequence(0, reservationPage.getTotalPages() - 1)}"
 										class="page-item">
 										<span th:if="${i == reservationPage.getNumber()}"
-											class="page-link active samuraitrabel-active" th:text="${i + 1}"></span>
+											class="page-link active moattravel-active" th:text="${i + 1}"></span>
 										<a th:unless="${i == reservationPage.getNumber()}"
 											th:href="@{/reservations(page = ${i})}"
-											class="page-link samuraitrabel-page-link" th:text="${i + 1}"></a>
+											class="page-link moattravel-page-link" th:text="${i + 1}"></a>
 									</li>
 									<li class="page-item">
 										<span th:if="${reservationPage.isLast()}" class="page-link disabled">次</span>
 										<a th:unless="${reservationPage.isLast()}"
 											th:href="@{/reservations(page = ${reservationPage.getNumber() + 1})}"
-											class="page-link samuraitrabel-page-link">次</a>
+											class="page-link moattravel-page-link">次</a>
 									</li>
 								</ul>
 							</nav>

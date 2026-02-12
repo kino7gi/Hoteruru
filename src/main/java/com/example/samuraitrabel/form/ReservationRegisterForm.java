@@ -9,11 +9,12 @@ import lombok.Data;
 
 public class ReservationRegisterForm {
 	public ReservationRegisterForm() {
+		// TODO 自動生成されたコンストラクター・スタブ
 	}
 	private Integer houseId;
 	private Integer userId;
 	private String checkinDate;
-	private String checkoutDate;
+	private String CkeckoutDate;
 	private Integer numberOfPeople;
 	private Integer amount;
 	

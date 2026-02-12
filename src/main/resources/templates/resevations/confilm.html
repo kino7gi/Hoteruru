@@ -95,7 +95,7 @@
 							<div class="d-flex justify-content-center">
 								<button type="submit"
 									class="btn text-white shadow-sm w-100 samuraitrabel-btn">確定する</button>
-								<button id="paymentButton" **type="button**"
+								<button id="paymentButton"
 									class="btn text-white shadow-sm w-100 samuraitrabel-btn">決済する</button>
 							</div>
 						</form>
@@ -110,11 +110,11 @@
 	</div>
 
 	<div th:replace="~{fragment :: scripts}"></div>
-
+	
 	//これを読み込むことでStripe関連の処理が可能になる
-	<script src="https://js.stripe.com/v3"></script>
-
-
+	<script src="https://js.stripe.com/v3"></script> 
+	
+	
 	<script th:inline="javascript">
 		const sessionId = /*[[${sessionId}]]*/"sessionId";
 	</script>

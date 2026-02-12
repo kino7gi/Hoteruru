@@ -1,7 +1,5 @@
 package com.example.samuraitrabel.event;
 
-//Listenerクラスにイベントが発生したことを知らせるクラス
-//イベント情報を保持できる
 import org.springframework.context.ApplicationEvent;
 
 import com.example.samuraitrabel.entity.User;

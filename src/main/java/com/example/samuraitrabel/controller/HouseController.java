@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.samuraitrabel.entity.House;
@@ -20,22 +21,22 @@ import com.example.samuraitrabel.repository.HouseRepository;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-//@RequestMapping("/houses")←戻すかも
+@RequestMapping("/houses")
 @RequiredArgsConstructor
 
 public class HouseController {
 	private final HouseRepository houseRepository;
-
+	
 	@GetMapping("/")
+
 	public String index(Model model) {
-		// 新着10件を取得してModelに渡す
 		List<House> newHouses = houseRepository.findTop10ByOrderByCreatedAtDesc();
 		model.addAttribute("newHouses", newHouses);
-
 		return "index";
+
 	}
 
-	@GetMapping("/houses")
+	@GetMapping
 
 	public String index(@RequestParam(name = "keyword", required = false) String keyword,
 			@RequestParam(name = "area", required = false) String area,
@@ -83,10 +84,10 @@ public class HouseController {
 
 		return "houses/index";
 	}
-
+	
 	//民宿画像をタップしたあとに出る画面の動き。show.html
-	@GetMapping("/houses/{id}")
-	public String show(@PathVariable(name = "id") Integer id, Model model) {
+	@GetMapping("/{id}")
+	public String show(@PathVariable(name = "id")Integer id, Model model) {
 		House house = houseRepository.getReferenceById(id);
 		model.addAttribute("house", house);
 		model.addAttribute("reservationInputForm", new ReservationInputForm());

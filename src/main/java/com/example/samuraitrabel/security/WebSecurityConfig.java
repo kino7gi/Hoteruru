@@ -20,8 +20,7 @@ public class WebSecurityConfig {
 
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests((requests) -> requests
-				.requestMatchers("/", "/login", "/signup", "/css/**", "/images/**", "/js/**", "/storage/**",
-						"/houses/**",
+				.requestMatchers("/login", "/signup", "/css/**", "/images/**", "/js/**", "/storage/**", "/houses/**", "/houses/{id}",
 						"/stripe/webhook")
 				.permitAll() // すべてのユーザーにアクセスを許可するURL
 				.requestMatchers("/admin/**").hasRole("ADMIN") // 管理者にのみアクセスを許可するURL
@@ -35,7 +34,7 @@ public class WebSecurityConfig {
 				.logout((logout) -> logout
 						.logoutSuccessUrl("/?loggedOut")//ログアウト時のリダイレクト先
 						.permitAll())
-
+				
 				//サーバー攻撃の一種。これを書かないと外部からPOST送信を受ける時にCSRFのチェックによって弾かれてしまうので、これを書いておく。
 				.csrf(csrf -> csrf.ignoringRequestMatchers("/stripe/webhook"));
 		return http.build();

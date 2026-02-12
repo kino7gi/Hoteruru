@@ -36,7 +36,7 @@ public class StripeService {
 			ReservationRegisterForm reservationRegisterForm,
 			HttpServletRequest httpServletRequest) {
 
-		Stripe.apiKey = stripeApiKey;
+		Stripe.apiKey = "mk_1SyiOlAKF64NSnzIPdYlE74y";
 		String requestUrl = new String(httpServletRequest.getRequestURL());
 
 		SessionCreateParams params = SessionCreateParams.builder()
@@ -65,7 +65,7 @@ public class StripeService {
 								.putMetadata("houseId", reservationRegisterForm.getHouseId().toString())
 								.putMetadata("userId", reservationRegisterForm.getUserId().toString())
 								.putMetadata("checkinDate", reservationRegisterForm.getCheckinDate())
-								.putMetadata("checkoutDate", reservationRegisterForm.getCheckoutDate())
+								.putMetadata("checkoutDate", reservationRegisterForm.getCkeckoutDate())
 								.putMetadata("numberOfPeople", reservationRegisterForm.getNumberOfPeople().toString())
 								.putMetadata("amount", reservationRegisterForm.getAmount().toString())
 								.build())

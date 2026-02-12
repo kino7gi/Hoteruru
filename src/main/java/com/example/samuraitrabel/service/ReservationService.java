@@ -39,7 +39,7 @@ public class ReservationService {
 		House house = houseRepository.getReferenceById(reservationRegisterForm.getHouseId());
 		User user = userRepository.getReferenceById(userId);
 		LocalDate checkinDate = LocalDate.parse(reservationRegisterForm.getCheckinDate());
-		LocalDate checkoutDate = LocalDate.parse(reservationRegisterForm.getCheckoutDate());
+		LocalDate checkoutDate = LocalDate.parse(reservationRegisterForm.getCkeckoutDate());
 		Integer numberOfPeople = reservationRegisterForm.getNumberOfPeople();
 		Integer amount = reservationRegisterForm.getAmount();
 
@@ -58,7 +58,7 @@ public class ReservationService {
 		form.setHouseId(Integer.valueOf(metadata.get("houseId")));
 		form.setUserId(Integer.valueOf(metadata.get("userId")));
 		form.setCheckinDate(metadata.get("checkinDate"));
-		form.setCheckoutDate(metadata.get("checkoutDate"));
+		form.setCkeckoutDate(metadata.get("checkoutDate"));
 		form.setNumberOfPeople(Integer.valueOf(metadata.get("numberOfPeople")));
 		form.setAmount(Integer.valueOf(metadata.get("amount")));
 

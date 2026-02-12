@@ -1,6 +1,5 @@
 package com.example.samuraitrabel.form;
 
-
 import java.time.LocalDate;
 
 import jakarta.validation.constraints.Min;
@@ -24,13 +23,13 @@ public class ReservationInputForm {
 
 	public LocalDate getCheckinDate() {
 		String[] checkinDateAndCheckoutDate = getFromCheckinDateToCheckoutDate().split(" から ");
-		return LocalDate.parse(checkinDateAndCheckoutDate[0].trim());
+		return LocalDate.parse(checkinDateAndCheckoutDate[0]);
 	}
 
 	//チェックアウト日を取得する
 
 	public LocalDate getCheckoutDate() {
 		String[] checkinDateAndCheckoutDate = getFromCheckinDateToCheckoutDate().split(" から ");
-		return LocalDate.parse(checkinDateAndCheckoutDate[1].trim());
+		return LocalDate.parse(checkinDateAndCheckoutDate[1]);
 	}
 }

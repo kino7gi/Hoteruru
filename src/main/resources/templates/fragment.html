@@ -53,7 +53,7 @@
 
 						<!--未ログインであれば表示する-->
 
-						<li class="nav-item" sec:authorize="isAnonymous()"><!--ログイン判断の簡略化-->
+						<li class="nav-item" sec:authorize="isAnonymous()">
 							<a class="nav-link" th:href="@{/login}">ログイン</a>
 						</li>
 						<li class="nav-item" sec:authorize="isAnonymous()">
@@ -62,8 +62,7 @@
 
 						<!--ログイン済みであれば表示する-->
 
-						<li class="nav-item dropdown" sec:authorize="isAuthenticated()">
-							<!--li class="nav-item dropdown" sec:authorize="hasRole('ROLE_GENERAL')"厳しくするならこっち-->
+						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_GENERAL')">
 							<a id="navbarDropdownGeneral" class="nav-link dropdown-toggle" href="#" role="button"
 								data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
 								<span sec:authentication="principal.user.name"></span>
