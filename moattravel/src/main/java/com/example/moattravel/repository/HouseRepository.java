@@ -1,5 +1,5 @@
 package com.example.moattravel.repository;
-
+//CRUD処理を行う。House.javaと対応
 import org.springframework.data.jpa.repository.JpaRepository;//CRUDに必要なメソッドが利用可能になる
 
 import com.example.moattravel.entity.House;
