@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.moattravel.entity.House;
+import com.example.moattravel.form.HouseEditForm;
 import com.example.moattravel.form.HouseRegisterForm;
 import com.example.moattravel.repository.HouseRepository;
 import com.example.moattravel.service.HouseService;
@@ -87,6 +88,8 @@ public class AdminHouseController {
 	//リクエストを送信する為のメソッド
 	@PostMapping("/create")
 	public String create(@ModelAttribute @Validated HouseRegisterForm houseRegisterForm,
+			//バリデーション結果を入れる箱
+			//@Validatedの直後に書かないとエラーになる
 			BindingResult bindingResult,
 			RedirectAttributes redirectAttributes) {
 
@@ -95,7 +98,63 @@ public class AdminHouseController {
 		}
 
 		houseService.create(houseRegisterForm);
+		//redirectAttributes→リダイレクト先にデータを渡すことができるようにする仕組み
+		//addFlashAttributeがあることで、一回値を渡したら、自動的にデータを削除してくれる
 		redirectAttributes.addFlashAttribute("successMessage", "民宿を登録しました。");
+
+		return "redirect:/admin/houses";
+	}
+
+	//民宿詳細を編集するためのコンストラクタ
+	@GetMapping("/{id}/edit")
+	//変更したいページのIDを取得
+	public String edit(@PathVariable(name = "id") Integer id, Model model) {
+
+		House house = houseRepository.getReferenceById(id);
+		//民宿画像のファイル名を取得する
+		String imageName = house.getImageName();
+
+		//ホームをインスタンス化
+		HouseEditForm houseEditForm = new HouseEditForm(
+				house.getId(),
+				house.getName(),
+				null,
+				house.getDescription(),
+				house.getPrice(),
+				house.getCapacity(),
+				house.getPostalCode(),
+				house.getAddress(),
+				house.getPhoneNumber());
+
+		//民宿画像のファイル名をビューに渡す
+		model.addAttribute("imageName", imageName);
+		//生成したインスタンスをビューに渡す
+		model.addAttribute("houseEditForm", houseEditForm);
+
+		return "admin/houses/edit";
+	}
+
+	@PostMapping("/{id}/update")
+	public String update(@ModelAttribute @Validated HouseEditForm houseEditForm,
+			BindingResult bindingResult,
+			RedirectAttributes redirectAttributes) {
+
+		if (bindingResult.hasErrors()) {
+			return "admin/houses/edit";
+		}
+
+		houseService.update(houseEditForm);
+		redirectAttributes.addFlashAttribute("successMessage", "民宿情報を編集しました。");
+
+		return "redirect:/admin/houses";
+	}
+	
+	//削除画面
+	@PostMapping("/{id}/delete")
+	public String delete(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes) {
+		houseRepository.deleteById(id);
+
+		redirectAttributes.addFlashAttribute("successMessage", "民宿を削除しました。");
 
 		return "redirect:/admin/houses";
 	}
