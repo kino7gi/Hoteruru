@@ -39,7 +39,7 @@ public class UserService {
 		user.setEmail(signupForm.getEmail());
 		user.setPassword(passwordEncoder.encode(signupForm.getPassword()));//パスワードを暗号化するためのメソッド
 		user.setRole(role);
-		user.setEnabled(true);//認証済み可動化を判断するメソッド
+		user.setEnabled(false);//認証済み可動化を判断するメソッド
 
 		return userRepository.save(user);
 	}
@@ -53,6 +53,13 @@ public class UserService {
 	// パスワードとパスワード（確認用）の入力値が一致するかどうかをチェックする
 	public boolean isSamePassword(String password, String passwordConfirmation) {
 		return password.equals(passwordConfirmation);
+	}
+
+	// ユーザーを有効にする
+	@Transactional
+	public void enableUser(User user) {
+		user.setEnabled(true);//メール承認後にアカウントを有効化
+		userRepository.save(user);//enableの変更を保存
 	}
 
 }
