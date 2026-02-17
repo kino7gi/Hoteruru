@@ -27,6 +27,7 @@ public class UserService {
 
 	@Transactional
 	public User create(SignupForm signupForm) {
+		System.out.println("createメソッド実行");
 
 		User user = new User();
 		Role role = roleRepository.findByName("ROLE_GENERAL");

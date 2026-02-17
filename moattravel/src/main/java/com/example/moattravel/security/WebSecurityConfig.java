@@ -22,11 +22,13 @@ public class WebSecurityConfig {
 		http
 				.authorizeHttpRequests((requests) -> requests
 						// すべてのユーザーにアクセスを許可するURL
-						.requestMatchers("/css/**", "/images/**", "/js/**", "/storage/**", "/", "/signup/**")
+						.requestMatchers("/css/**", "/images/**", "/js/**", "/storage/**", "/", "/signup/**",
+								"/houses/**")
 						.permitAll()
 
 						// 管理者にのみアクセスを許可するURL
-						.requestMatchers("/admin/**").hasRole("ADMIN")
+						.requestMatchers("/admin/**").hasRole(
+								"ADMIN")
 
 						// 上記以外のURLはログインが必要（会員または管理者）
 						.anyRequest().authenticated())
