@@ -11,4 +11,7 @@ public interface HouseRepository extends JpaRepository<House, Integer> {
 	//Houseからキーワードを含む情報をページ付きで表示するメソッド
 	//find→データを取得　ByName→エンティティのnameフィールドを条件　Like→SQLのLIKE条件(部分一致検索)
 	public Page<House> findByNameLike(String keyword, Pageable pageable);
+	public Page<House> findByNameLikeOrAddressLike(String nameKeyword, String addressKeyword, Pageable pageable);
+	public Page<House> findByAddressLike(String area, Pageable pageable);
+	public Page<House> findByPriceLessThanEqual(Integer price, Pageable pageable);
 }

@@ -1,5 +1,5 @@
 package com.example.moattravel.security;
-//ログイン時の動き
+//ログイン時の動き。ユーザーの情報を保持する
 import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
