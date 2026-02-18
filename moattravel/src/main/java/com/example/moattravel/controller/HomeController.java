@@ -1,15 +1,29 @@
 package com.example.moattravel.controller;
 //templates.indexのコントローラー
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@Controller //コントローラーとして機能するようになる
-public class HomeController {
+import com.example.moattravel.entity.House;
+import com.example.moattravel.repository.HouseRepository;
 
-	@GetMapping("/")//URL/がきたら
-	public String index() {//index()を実行
-		return "index";//indexに返っていく
+@Controller
+public class HomeController {
+	private final HouseRepository houseRepository;
+
+	public HomeController(HouseRepository houseRepository) {
+		this.houseRepository = houseRepository;
+	}
+
+	@GetMapping("/")
+	public String index(Model model) {
+		List<House> newHouses = houseRepository.findTop10ByOrderByCreatedAtDesc();
+		model.addAttribute("newHouses", newHouses);
+
+		return "index";
 	}
 
 }

@@ -1,10 +1,14 @@
 package com.example.moattravel.controller;
 
+//色々な情報で検索できるようにするリポジトリ
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -14,27 +18,66 @@ import com.example.moattravel.repository.HouseRepository;
 @Controller
 @RequestMapping("/houses")
 public class HouseController {
-	private final HouseRepository houseRepository;
+	private final HouseRepository houseRepository;//データベースを扱うリポジトリを注入している
 
 	public HouseController(HouseRepository houseRepository) {
 		this.houseRepository = houseRepository;
 	}
 
 	@GetMapping
-	public String listHouses(
-			Model model,//コントローラからテンプレートにあたいを渡すためのオブジェクト
-			Pageable pageable,//ページ番号、ページサイズ、ソート順
-			@RequestParam(required = false) String keyword,
-			@RequestParam(required = false) String area,
-			@RequestParam(required = false) Integer price) {
-		// Page<House> を取得（検索条件なしの簡易例）
-		Page<House> housePage = houseRepository.findAll(pageable);
+	public String index(
+			@RequestParam(name = "keyword", required = false) String keyword,
+			@RequestParam(name = "area", required = false) String area,
+			@RequestParam(name = "price", required = false) Integer price,
+			@RequestParam(name = "order", required = false) String order,
+			@PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.ASC) Pageable pageable,
+			Model model) {
+		Page<House> housePage;
 
-		model.addAttribute("housePage", housePage); // テンプレートの変数名と一致させる
+		if (keyword != null && !keyword.isEmpty()) {
+			if (order != null && order.equals("priceAsc")) {
+				housePage = houseRepository.findByNameLikeOrAddressLikeOrderByPriceAsc("%" + keyword + "%",
+						"%" + keyword + "%", pageable);
+			} else {
+				housePage = houseRepository.findByNameLikeOrAddressLikeOrderByCreatedAtDesc("%" + keyword + "%",
+						"%" + keyword + "%", pageable);
+			}
+		} else if (area != null && !area.isEmpty()) {
+			if (order != null && order.equals("priceAsc")) {
+				housePage = houseRepository.findByAddressLikeOrderByPriceAsc("%" + area + "%", pageable);
+			} else {
+				housePage = houseRepository.findByAddressLikeOrderByCreatedAtDesc("%" + area + "%", pageable);
+			}
+		} else if (price != null) {
+			if (order != null && order.equals("priceAsc")) {
+				housePage = houseRepository.findByPriceLessThanEqualOrderByPriceAsc(price, pageable);
+			} else {
+				housePage = houseRepository.findByPriceLessThanEqualOrderByCreatedAtDesc(price, pageable);
+			}
+		} else {
+			if (order != null && order.equals("priceAsc")) {
+				housePage = houseRepository.findAllByOrderByPriceAsc(pageable);
+			} else {
+				housePage = houseRepository.findAllByOrderByCreatedAtDesc(pageable);
+			}
+		}
+
+		model.addAttribute("housePage", housePage);
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("area", area);
 		model.addAttribute("price", price);
+		model.addAttribute("order", order);
 
-		return "houses/index"; // templates/houses/index.html
+		return "houses/index";
 	}
+
+	@GetMapping("/{id}")
+	public String show(@PathVariable(name = "id") Integer id, Model model) {
+		House house = houseRepository.getReferenceById(id);
+
+		model.addAttribute("house", house);
+
+		return "houses/show";
+	}
+
 }
