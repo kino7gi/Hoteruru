@@ -23,7 +23,7 @@ import com.example.moattravel.form.HouseRegisterForm;
 import com.example.moattravel.repository.HouseRepository;
 import com.example.moattravel.service.HouseService;
 
-@Controller
+@Controller//結果を運ぶ
 @RequestMapping("/admin/houses") //先にこれを書いておくことで、"/admin/houses"を繰り返し書かなくて済む
 public class AdminHouseController {
 
@@ -34,6 +34,7 @@ public class AdminHouseController {
 
 	//HouseRepositoryをつかうためにコンストラクタで受け取っている
 	public AdminHouseController(HouseRepository houseRepository, HouseService houseService) {
+		//一度だけ挿入
 		this.houseRepository = houseRepository;
 		this.houseService = houseService;
 	}

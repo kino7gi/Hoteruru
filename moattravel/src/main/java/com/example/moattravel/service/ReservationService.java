@@ -15,7 +15,6 @@ import com.example.moattravel.repository.HouseRepository;
 import com.example.moattravel.repository.ReservationRepository;
 import com.example.moattravel.repository.UserRepository;
 
-
 @Service
 public class ReservationService {
 	private final ReservationRepository reservationRepository;
@@ -29,33 +28,32 @@ public class ReservationService {
 		this.houseRepository = houseRepository;
 		this.userRepository = userRepository;
 	}
-	
+
 	//Webhookと繋げるためのもの
 	@Transactional
 	public void create(Map<String, String> paymentIntentObject) {
 
-	    Integer houseId = Integer.valueOf(paymentIntentObject.get("houseId"));
-	    Integer userId = Integer.valueOf(paymentIntentObject.get("userId"));
-	    LocalDate checkinDate = LocalDate.parse(paymentIntentObject.get("checkinDate"));
-	    LocalDate checkoutDate = LocalDate.parse(paymentIntentObject.get("checkoutDate"));
-	    Integer numberOfPeople = Integer.valueOf(paymentIntentObject.get("numberOfPeople"));
-	    Integer amount = Integer.valueOf(paymentIntentObject.get("amount"));
+		Integer houseId = Integer.valueOf(paymentIntentObject.get("houseId"));
+		Integer userId = Integer.valueOf(paymentIntentObject.get("userId"));
+		LocalDate checkinDate = LocalDate.parse(paymentIntentObject.get("checkinDate"));
+		LocalDate checkoutDate = LocalDate.parse(paymentIntentObject.get("checkoutDate"));
+		Integer numberOfPeople = Integer.valueOf(paymentIntentObject.get("numberOfPeople"));
+		Integer amount = Integer.valueOf(paymentIntentObject.get("amount"));
+		House house = houseRepository.findById(houseId)
+				.orElseThrow(() -> new RuntimeException("House not found: " + houseId));
+		User user = userRepository.findById(userId)
+				.orElseThrow(() -> new RuntimeException("User not found: " + userId));
 
-	    House house = houseRepository.getReferenceById(houseId);
-	    User user = userRepository.getReferenceById(userId);
+		Reservation reservation = new Reservation();
+		reservation.setHouse(house);
+		reservation.setUser(user);
+		reservation.setCheckinDate(checkinDate);
+		reservation.setCheckoutDate(checkoutDate);
+		reservation.setNumberOfPeople(numberOfPeople);
+		reservation.setAmount(amount);
 
-	    Reservation reservation = new Reservation();
-	    reservation.setHouse(house);
-	    reservation.setUser(user);
-	    reservation.setCheckinDate(checkinDate);
-	    reservation.setCheckoutDate(checkoutDate);
-	    reservation.setNumberOfPeople(numberOfPeople);
-	    reservation.setAmount(amount);
-
-	    reservationRepository.save(reservation);
+		reservationRepository.save(reservation);
 	}
-
-
 
 	// 宿泊人数が定員以下かどうかをチェックする
 	public boolean isWithinCapacity(Integer numberOfPeople, Integer capacity) {

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
-
+<!--fragment.html-->
 <head>
 	<!-- meta要素の部品化 -->
 	<!--fragment→部品化するための機能。-->
@@ -55,14 +55,15 @@
 
 						<!-- ログイン済みであれば表示する -->
 						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_GENERAL')">
-							<a ec:authorize="hasRole('ROLE_GENERAL')" id="navbarDropdownGeneral"
-								class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-								aria-haspopup="true" aria-expanded="false" v-pre></a>
-
+							
 							<!--これを設定することで、会員の氏名を表示できる-->
 							<span sec:authentication="principal.user.name"></span>
 
+							<a ec:authorize="hasRole('ROLE_GENERAL')" id="navbarDropdownGeneral"
+								class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+								aria-haspopup="true" aria-expanded="false" v-pre></a>
 							<div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownGeneral">
+								
 								<a class="dropdown-item moattravel-dropdown-item" th:href="@{/reservations}">
 									予約一覧
 								</a>

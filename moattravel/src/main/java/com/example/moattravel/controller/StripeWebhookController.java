@@ -48,7 +48,9 @@ public class StripeWebhookController {
 
 		//checkout.session.completedと＝だったときにStripeServiceのprocessSessionCompleted()メソッドを呼び出す
 		if ("checkout.session.completed".equals(event.getType())) {
-			stripeService.processSessionCompleted(event);
+			System.out.println("🔥 checkout.session.completed に入りました");
+		    stripeService.processSessionCompleted(event);
+		    System.out.println("🔥 stripeService 呼び出し完了");
 		}
 
 		return new ResponseEntity<>("Success", HttpStatus.OK);

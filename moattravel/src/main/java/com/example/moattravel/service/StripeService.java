@@ -9,14 +9,15 @@ import com.example.moattravel.form.ReservationRegisterForm;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Event;
-import com.stripe.model.StripeObject;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 import com.stripe.param.checkout.SessionRetrieveParams;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j; // ログ出力用（推奨）
 
 @Service
+@Slf4j
 public class StripeService {
 
 	@Value("${stripe.api-key}")
@@ -28,13 +29,24 @@ public class StripeService {
 		this.reservationService = reservationService;
 	}
 
-	// セッションを作成し、Stripeに必要な情報を返す
+	/**
+	 * Stripe Checkoutセッションを作成し、セッションIDを返す
+	 */
 	public String createStripeSession(String houseName,
 			ReservationRegisterForm reservationRegisterForm,
 			HttpServletRequest httpServletRequest) {
 
 		Stripe.apiKey = stripeApiKey;
-		String requestUrl = new String(httpServletRequest.getRequestURL());
+		String requestUrl = httpServletRequest.getRequestURL().toString();
+
+		// メタデータの作成（共通利用）
+		Map<String, String> metadata = Map.of(
+				"houseId", reservationRegisterForm.getHouseId().toString(),
+				"userId", reservationRegisterForm.getUserId().toString(),
+				"checkinDate", reservationRegisterForm.getCheckinDate(),
+				"checkoutDate", reservationRegisterForm.getCheckoutDate(),
+				"numberOfPeople", reservationRegisterForm.getNumberOfPeople().toString(),
+				"amount", reservationRegisterForm.getAmount().toString());
 
 		SessionCreateParams params = SessionCreateParams.builder()
 				.addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
@@ -53,17 +65,14 @@ public class StripeService {
 								.build())
 				.setMode(SessionCreateParams.Mode.PAYMENT)
 				.setSuccessUrl(
-						requestUrl.replaceAll("/houses/[0-9]+/reservations/confirm", "")
-								+ "/reservations?reserved")
+						requestUrl.replaceAll("/houses/[0-9]+/reservations/confirm", "") + "/reservations?reserved")
 				.setCancelUrl(requestUrl.replace("/reservations/confirm", ""))
+				// Session自体にメタデータを保持（Webhookで直接取得しやすくなる）
+				.putAllMetadata(metadata)
+				// 支払い完了後のPaymentIntentにもメタデータを引き継ぐ
 				.setPaymentIntentData(
 						SessionCreateParams.PaymentIntentData.builder()
-								.putMetadata("houseId", reservationRegisterForm.getHouseId().toString())
-								.putMetadata("userId", reservationRegisterForm.getUserId().toString())
-								.putMetadata("checkinDate", reservationRegisterForm.getCheckinDate())
-								.putMetadata("checkoutDate", reservationRegisterForm.getCheckoutDate())
-								.putMetadata("numberOfPeople", reservationRegisterForm.getNumberOfPeople().toString())
-								.putMetadata("amount", reservationRegisterForm.getAmount().toString())
+								.putAllMetadata(metadata)
 								.build())
 				.build();
 
@@ -71,51 +80,75 @@ public class StripeService {
 			Session session = Session.create(params);
 			return session.getId();
 		} catch (StripeException e) {
-			e.printStackTrace();
+			log.error("Stripeセッション作成中にエラーが発生しました: {}", e.getMessage());
 			return "";
 		}
 	}
 
+	/**
+	 * Webhookイベントを受け取り、予約データをDBに保存する
+	 * JSONをライブラリに任せてまるごとJavaオブジェクトに変換する←正規ルート
+	 * JSONを単なる「文字列」として読み込み、正規表現を使ってIDだけを強引に引き出した。
+	 * ライブラリの自動変換に頼らず、
+	 */
 	public void processSessionCompleted(Event event) {
+		log.info("★★ Stripe Webhook 処理開始 (Event ID: {}) ★★", event.getId());
 
-		System.out.println("★★ processSessionCompleted 開始 ★★");
+		String sessionId = null;
+
+		// 1. Raw JSON から直接 ID を抽出する（型の不一致エラーを回避）
+		try {
+			// ここを Optional ではなく直接 String で受け取ります
+			String rawJson = event.getDataObjectDeserializer().getRawJson();
+
+			if (rawJson != null && !rawJson.isEmpty()) {
+				// 正規表現で "id": "cs_test_..." の部分を抽出
+				java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("\"id\":\\s*\"([^\"]+)\"");
+				java.util.regex.Matcher matcher = pattern.matcher(rawJson);
+				if (matcher.find()) {
+					sessionId = matcher.group(1);
+				}
+			}
+		} catch (Exception e) {
+			log.error("❌ Raw JSON からの ID 抽出に失敗しました: {}", e.getMessage());
+		}
+
+		if (sessionId == null) {
+			log.error("❌ Session ID が取得できないため、処理を中断します。");
+			return;
+		}
 
 		try {
+			Stripe.apiKey = stripeApiKey;
+			log.info("取得した Session ID: {} を使ってStripeからデータを引き直します...", sessionId);
 
-			var dataObjectDeserializer = event.getDataObjectDeserializer();
-
-			StripeObject stripeObject = null;
-
-			if (dataObjectDeserializer.getObject().isPresent()) {
-				stripeObject = dataObjectDeserializer.getObject().get();
-			} else {
-				stripeObject = dataObjectDeserializer.deserializeUnsafe();
-			}
-
-			if (stripeObject == null) {
-				System.out.println("❌ StripeObject が null");
-				return;
-			}
-
-			Session session = (Session) stripeObject;
-
+			// 2. ID を使ってデータを再取得
 			SessionRetrieveParams params = SessionRetrieveParams.builder()
 					.addExpand("payment_intent")
 					.build();
 
-			session = Session.retrieve(session.getId(), params, null);
+			Session session = Session.retrieve(sessionId, params, null);
 
-			System.out.println("Session ID: " + session.getId());
-
+			// 3. メタデータの抽出
 			Map<String, String> metadata = session.getMetadata();
-			System.out.println("Session metadata: " + metadata);
 
-			reservationService.create(metadata);
+			if ((metadata == null || metadata.isEmpty()) && session.getPaymentIntentObject() != null) {
+				log.info("Sessionのメタデータが空のため、PaymentIntentのメタデータを使用します。");
+				metadata = session.getPaymentIntentObject().getMetadata();
+			}
 
-			System.out.println("★★ DB保存処理 呼び出し完了 ★★");
+			if (metadata != null && !metadata.isEmpty()) {
+				reservationService.create(metadata);
+				log.info("★★ DB保存処理が正常に完了しました (House ID: {}, User ID: {}) ★★",
+						metadata.get("houseId"), metadata.get("userId"));
+			} else {
+				log.error("❌ メタデータが取得できませんでした。");
+			}
 
+		} catch (StripeException e) {
+			log.error("❌ Stripe API通信エラー: {}", e.getMessage());
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("❌ 予期せぬエラー: ", e);
 		}
 	}
 
