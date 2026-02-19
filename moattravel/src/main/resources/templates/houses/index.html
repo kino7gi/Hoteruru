@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<!--予約一覧に関する　index.html-->
 
 <head>
 	<div th:replace="~{fragment :: meta}"></div>
 	<div th:replace="~{fragment :: styles}"></div>
+
+	<!-- Flatpickr -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 	<title>民宿一覧</title>
 </head>
 
@@ -149,8 +153,8 @@
 							</p>
 							<p th:unless="${housePage.getTotalPages() > 1}" class="fs-5 mb-3"
 								th:text="${'検索結果：' + housePage.getTotalElements() + '件'}"></p>
-								
-								<!--検索結果を並べる用のフォーム-->
+
+							<!--検索結果を並べる用のフォーム-->
 							<form method="get" th:action="@{/houses}" class="mb-3 moattravel-sort-box">
 								<input th:if="${keyword}" type="hidden" name="keyword" th:value="${keyword}">
 								<input th:if="${area}" type="hidden" name="area" th:value="${area}">
@@ -206,15 +210,18 @@
 										<a th:unless="${housePage.isFirst()}"
 											th:href="@{/houses(page = ${housePage.getNumber() - 1}, keyword = ${keyword}, area = ${area}, price = ${price})}"
 											class="page-link moattravel-page-link">前</a>
-											</li>
+									</li>
 									<li th:each="i : ${#numbers.sequence(0, housePage.getTotalPages() - 1)}"
 										class="page-item">
+
 										<span th:if="${i == housePage.getNumber()}"
 											class="page-link active moattravel-active" th:text="${i + 1}"></span>
-										<a th:unless="${housePage.isFirst()}"
-											th:href="@{/houses(page = ${housePage.getNumber() - 1}, keyword = ${keyword}, area = ${area}, price = ${price}, order = ${order})}"
-											class="page-link moattravel-page-link">前</a>
+
+										<a th:unless="${i == housePage.getNumber()}"
+											th:href="@{/houses(page=${i}, keyword=${keyword}, area=${area}, price=${price}, order=${order})}"
+											class="page-link moattravel-page-link" th:text="${i + 1}"></a>
 									</li>
+
 									<li class="page-item">
 										<span th:if="${housePage.isLast()}" class="page-link disabled">次</span>
 										<a th:unless="${housePage.isLast()}"
@@ -234,6 +241,11 @@
 	</div>
 
 	<div th:replace="~{fragment :: scripts}"></div>
+	<!-- Flatpickr -->
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+	<script th:src="@{/js/flatpickr.js}"></script>
+
 </body>
 
 </html>

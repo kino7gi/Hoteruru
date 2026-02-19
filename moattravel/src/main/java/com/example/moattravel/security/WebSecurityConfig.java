@@ -21,6 +21,7 @@ public class WebSecurityConfig {
 
 		http
 				.authorizeHttpRequests((requests) -> requests
+						.requestMatchers("/stripe/webhook").permitAll()
 						// すべてのユーザーにアクセスを許可するURL
 						.requestMatchers("/css/**", "/images/**", "/js/**", "/storage/**", "/", "/signup/**",
 								"/houses/{id}")
@@ -40,7 +41,10 @@ public class WebSecurityConfig {
 						.permitAll())
 				.logout((logout) -> logout
 						.logoutSuccessUrl("/?loggedOut") // ログアウト時のリダイレクト先URL
-						.permitAll());
+						.permitAll())
+				//ラムダ形式(メソッドの中にょ理を書く短い書き方)
+				.csrf(csrf -> csrf
+						.ignoringRequestMatchers("/stripe/webhook"));
 
 		return http.build();
 	}
