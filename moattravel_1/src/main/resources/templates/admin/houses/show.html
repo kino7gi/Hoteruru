@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org">
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
 
@@ -24,7 +24,6 @@
 				<div class="row justify-content-center">
 					<div class="col-xl-5 col-lg-6 col-md-8">
 
-						<!-- パンくず -->
 						<nav class="mb-4" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
 							<ol class="breadcrumb mb-0">
 								<li class="breadcrumb-item">
@@ -36,20 +35,21 @@
 							</ol>
 						</nav>
 
-						<h1 class="mb-4 text-center" th:text="${house.name}"></h1>
+						<h1 class="mb-4 text-center" th:text="${house.getName()}"></h1>
 
 						<div class="d-flex justify-content-end align-items-end mb-3">
 							<div>
-								<a href="#">編集</a>
+								<a th:href="@{/admin/houses/__${house.getId()}__/edit}">
+									編集
+								</a>
 							</div>
 						</div>
 
-						<!-- 画像 -->
 						<div class="mb-3">
-							<img th:if="${house.imageName}" th:src="@{/storage/__${house.imageName}__}" class="w-100"
-								alt="民宿画像">
+							<img th:if="${house.getImageName()}" th:src="@{/storage/__${house.getImageName()}__}"
+								class="w-100" alt="民宿画像">
 
-							<img th:unless="${house.imageName}" th:src="@{/images/noImage.png}" class="w-100"
+							<img th:unless="${house.getImageName()}" th:src="@{/images/noImage.png}" class="w-100"
 								alt="NO IMAGE">
 						</div>
 
