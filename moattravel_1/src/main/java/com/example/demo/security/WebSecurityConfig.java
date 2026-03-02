@@ -16,15 +16,26 @@ public class WebSecurityConfig {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
 		http
 				.authorizeHttpRequests((requests) -> requests
-						.requestMatchers("/css/**", "/images/**", "/js/**", "/storage/**", "/", "/signup/**",
-								"/houses")
-						.permitAll() // すべてのユーザーにアクセスを許可するURL
-						.requestMatchers("/signup/**").permitAll() // サインアップページも許可
-						.requestMatchers("/admin/**").hasRole("ADMIN") // 管理者にのみアクセスを許可するURL
-						.anyRequest().authenticated() // 上記以外のURLはログインが必要（会員または管理者のどちらでもOK）
-				)
+						// すべてのユーザーにアクセスを許可するURL
+						.requestMatchers(
+								"/css/**",
+								"/images/**",
+								"/js/**",
+								"/storage/**",
+								"/",
+								"/signup/**",
+								"/houses",
+								"/houses/{id}")
+						.permitAll()
+
+						// 管理者にのみアクセスを許可するURL
+						.requestMatchers("/admin/**").hasRole("ADMIN")
+
+						// 上記以外のURLはログインが必要（会員または管理者）
+						.anyRequest().authenticated())
 
 				.formLogin((form) -> form
 						.loginPage("/login") // ログインページのURL
@@ -35,7 +46,6 @@ public class WebSecurityConfig {
 				.logout((logout) -> logout
 						.logoutSuccessUrl("/?loggedOut") // ログアウト時のリダイレクト先URL
 						.permitAll());
-						
 
 		return http.build();
 	}

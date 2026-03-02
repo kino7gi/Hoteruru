@@ -1,5 +1,7 @@
 package com.example.demo.repository;
 
+import java.util.List;
+
 //CRUDを行う操作
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,12 +13,23 @@ public interface HouseRepository extends JpaRepository<House, Integer> {
 
 	public Page<House> findByNameLike(String keyword, Pageable pageable);
 
-	public Page<House> findByNameLikeOrAddressLike(
-			String nameKeyword,
-			String addressKeyword,
+	public Page<House> findByNameLikeOrAddressLikeOrderByCreatedAtDesc(String nameKeyword, String addressKeyword,
 			Pageable pageable);
 
-	public Page<House> findByAddressLike(String area, Pageable pageable);
+	public Page<House> findByNameLikeOrAddressLikeOrderByPriceAsc(String nameKeyword, String addressKeyword,
+			Pageable pageable);
 
-	public Page<House> findByPriceLessThanEqual(Integer price, Pageable pageable);
+	public Page<House> findByAddressLikeOrderByCreatedAtDesc(String area, Pageable pageable);
+
+	public Page<House> findByAddressLikeOrderByPriceAsc(String area, Pageable pageable);
+
+	public Page<House> findByPriceLessThanEqualOrderByCreatedAtDesc(Integer price, Pageable pageable);
+
+	public Page<House> findByPriceLessThanEqualOrderByPriceAsc(Integer price, Pageable pageable);
+
+	public Page<House> findAllByOrderByCreatedAtDesc(Pageable pageable);
+
+	public Page<House> findAllByOrderByPriceAsc(Pageable pageable);
+
+	public List<House> findTop10ByOrderByCreatedAtDesc();
 }
