@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entity.House;
+import com.example.demo.form.ReservationInputForm;
 import com.example.demo.repository.HouseRepository;
 
 @Controller
@@ -32,34 +33,27 @@ public class HouseController {
 			@RequestParam(name = "order", required = false) String order,
 			@PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.ASC) Pageable pageable,
 			Model model) {
-
 		Page<House> housePage;
 
 		if (keyword != null && !keyword.isEmpty()) {
 			if ("priceAsc".equals(order)) {
-				housePage = houseRepository
-						.findByNameLikeOrAddressLikeOrderByPriceAsc(
-								"%" + keyword + "%", "%" + keyword + "%", pageable);
+				housePage = houseRepository.findByNameLikeOrAddressLikeOrderByPriceAsc("%" + keyword + "%",
+						"%" + keyword + "%", pageable);
 			} else {
-				housePage = houseRepository
-						.findByNameLikeOrAddressLikeOrderByCreatedAtDesc(
-								"%" + keyword + "%", "%" + keyword + "%", pageable);
+				housePage = houseRepository.findByNameLikeOrAddressLikeOrderByCreatedAtDesc("%" + keyword + "%",
+						"%" + keyword + "%", pageable);
 			}
 		} else if (area != null && !area.isEmpty()) {
 			if ("priceAsc".equals(order)) {
-				housePage = houseRepository
-						.findByAddressLikeOrderByPriceAsc("%" + area + "%", pageable);
+				housePage = houseRepository.findByAddressLikeOrderByPriceAsc("%" + area + "%", pageable);
 			} else {
-				housePage = houseRepository
-						.findByAddressLikeOrderByCreatedAtDesc("%" + area + "%", pageable);
+				housePage = houseRepository.findByAddressLikeOrderByCreatedAtDesc("%" + area + "%", pageable);
 			}
 		} else if (price != null) {
 			if ("priceAsc".equals(order)) {
-				housePage = houseRepository
-						.findByPriceLessThanEqualOrderByPriceAsc(price, pageable);
+				housePage = houseRepository.findByPriceLessThanEqualOrderByPriceAsc(price, pageable);
 			} else {
-				housePage = houseRepository
-						.findByPriceLessThanEqualOrderByCreatedAtDesc(price, pageable);
+				housePage = houseRepository.findByPriceLessThanEqualOrderByCreatedAtDesc(price, pageable);
 			}
 		} else {
 			if ("priceAsc".equals(order)) {
@@ -83,6 +77,7 @@ public class HouseController {
 		House house = houseRepository.getReferenceById(id);
 
 		model.addAttribute("house", house);
+		model.addAttribute("reservationInputForm", new ReservationInputForm());
 
 		return "houses/show";
 	}
