@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+	<div id="main-content">
+		<img th:src="@{/images/welcome.gif}" alt="welcome Video" id="bg-gif">
+		<div class="container result-card">
+			<header>
+				<h1 class="brand-logo-small">ATELIER DE PARFUM</h1>
+				<p class="status-tag">Order Received</p>
+			</header>
+
+			<div class="receipt-body">
+				<div class="section">
+					<h3>Selected Scents</h3>
+					<div class="scent-selection">
+						<div th:each="s : ${selectedScents}" class="scent-option result-item">
+							<span class="check-mark">✓</span>
+							<label th:text="${s}"></label>
+						</div>
+						<div th:if="${selectedScents == null || selectedScents.isEmpty()}" class="scent-option">
+							<label>No Scent Selected</label>
+						</div>
+					</div>
+				</div>
+
+				<div class="section">
+					<h3>Selected Bottle</h3>
+					<div class="bottle-selection">
+						<div class="bottle-option result-item">
+							<span class="check-mark">✓</span>
+							<label th:text="${selectedBottle} + ' Bottle'"></label>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+
+</body>
+
+</html>

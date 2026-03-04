@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Your Special Blend</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body class="result-body">
+	<img th:src="@{/images/welcome.gif}" alt="Welcome Video" id="bg-gif">
+
+	<div class="result-card">
+		<p class="thank-you-text">THANK YOU</p>
+
+		<h1 class="blend-title" th:text="${title}">Custom Blend</h1>
+
+		<p class="blend-message" th:text="${message}">メッセージ</p>
+
+		<div class="details">
+			<p><strong>Scent:</strong>
+				<span th:each="s, iterStat : ${selectedScents}" th:text="${s} + ${!iterStat.last ? ' & ' : ''}"></span>
+			</p>
+			<p><strong>Bottle:</strong> <span th:text="${selectedBottle}">Clear</span></p>
+
+			<hr style="border: none; border-top: 1px solid #eee; margin: 10px 0;">
+
+			<p style="font-size: 1.1rem;">
+				<strong>Total Price:</strong>
+				<span style="color: #333;" th:text="'¥' + ${#numbers.formatInteger(totalPrice, 3, 'COMMA')}">¥0</span>
+			</p>
+		</div>
+
+		<a th:href="@{/}" class="order-button"
+			style="text-decoration: none; display: inline-block; text-align: center;">
+			BACK TO TOP
+		</a>
+	</div>
+
+</body>
+
+</html>
