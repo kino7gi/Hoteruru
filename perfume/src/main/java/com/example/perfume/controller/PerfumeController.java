@@ -1,18 +1,20 @@
-// src/main/java/com/example/perfume/controller/PerfumeController.java
 package com.example.perfume.controller;
-
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.perfume.dto.OrderForm;
+import com.example.perfume.dto.UserForm;
 import com.example.perfume.entity.Order;
 import com.example.perfume.repository.OrderRepository;
 import com.example.perfume.service.PerfumeService;
+
+import jakarta.validation.Valid;
 
 @Controller
 public class PerfumeController {
@@ -24,28 +26,37 @@ public class PerfumeController {
 	private OrderRepository orderRepository;
 
 	@GetMapping("/")
-	public String index() {
+	public String index(Model model) {
+		// Thymeleafのフォームと連携させるために空のオブジェクトを渡す
+		model.addAttribute("orderForm", new OrderForm());
+		model.addAttribute("userForm", new UserForm());
 		return "index";
 	}
 
 	@PostMapping("/order")
 	public String placeOrder(
-			@RequestParam(value = "scents", required = false) List<String> scents,
-			@RequestParam(value = "bottleType", defaultValue = "Clear") String bottleType,
+			@Valid @ModelAttribute("orderForm") OrderForm orderForm, // バリデーションを実行
+			BindingResult result, // チェック結果を格納
 			Model model) {
 
-		// Serviceでロジック実行
-		Order order = perfumeService.createOrder(scents, bottleType);
+		// --- 1. Java側でのバリデーション（誤字・未入力チェック） ---
+		if (result.hasErrors()) {
+			// エラーがある場合は index.html に戻る
+			// JS側で「エラーがある場合は住所入力から表示」する制御が必要
+			model.addAttribute("hasErrors", true);
+			return "index";
+		}
 
-		// Repositoryで保存（形だけ）
+		// --- 2. Serviceで注文エンティティの生成（計算・判定ロジック） ---
+		// 前回のService修正で引数を OrderForm に変更している前提です
+		Order order = perfumeService.createOrder(orderForm);
+
+		// --- 3. Repositoryで保存 ---
 		orderRepository.save(order);
 
-		// Modelに詰め直し
-		model.addAttribute("title", order.getTitle());
-		model.addAttribute("message", order.getMessage());
-		model.addAttribute("selectedScents", order.getScents());
-		model.addAttribute("selectedBottle", order.getBottleType());
-		model.addAttribute("totalPrice", order.getTotalPrice());
+		// --- 4. 結果画面（result.html）へデータを渡す ---
+		model.addAttribute("order", order);
+		// まとめて order を渡すことで result.html 側で [[${order.title}]] などと書けます
 
 		return "result";
 	}

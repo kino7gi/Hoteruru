@@ -11,5 +11,23 @@ public class Order {
 	private String bottleType;
 	private String title;
 	private String message;
+	private String userName;
+	private String userAddress;
 	private int totalPrice;
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getUserAddress() {
+		return userAddress;
+	}
+
+	public void setUserAddress(String userAddress) {
+		this.userAddress = userAddress;
+	}
 }

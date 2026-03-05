@@ -150,6 +150,7 @@ body {
 
 .hidden {
 	display: none !important;
+	opacity: 0;
 }
 
 /* 白いカード共通デザイン */
@@ -360,4 +361,14 @@ body {
 #bottle-image {
 	max-height: 140px;
 	object-fit: contain;
+}
+
+/* selection-area が正しく切り替わるための設定 */
+#selection-area.hidden {
+	display: none !important;
+}
+
+#selection-area {
+	display: block;
+	opacity: 0;
 }

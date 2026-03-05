@@ -14,22 +14,19 @@
 	</div>
 
 	<div id="main-content" class="hidden">
-		<div th:replace="~{introduction :: scent-intro-parts}"></div>
 
-		<div class="container reveal">
-			<form th:action="@{/order}" method="post" id="perfumeForm">
-			</form>
+		<div id="intro-section">
+			<div th:replace="~{introduction :: scent-intro-parts}"></div>
 		</div>
-	</div>
 
-	<div id="main-content" class="hidden">
-		<div class="container">
+		<div id="selection-area" class="container hidden">
 			<header>
 				<h2>Order Your Scent</h2>
 				<p>世界にひとつ、あなただけの香りを。</p>
 			</header>
 
-			<form th:action="@{/order}" method="post" id="perfumeForm">
+			<form th:action="@{/order}" th:object="${orderForm}" method="post" id="perfumeForm">
+				<div th:replace="~{address-section :: address}"></div>
 				<div class="section">
 					<h4>1. お好きな香りを2つまで</h4>
 					<div class="scent-selection">
@@ -41,16 +38,16 @@
 				</div>
 
 				<div class="section">
-					<h4>2. ボトルの選択</h3>
-						<div class="bottle-preview">
-							<img id="bottle-image" th:src="@{/images/IMG_0289.JPG}" alt="Bottle">
-						</div>
-						<div class="bottle-selection">
-							<input type="radio" id="bottle-clear" name="bottleType" value="Clear" checked>
-							<label for="bottle-clear">Clear</label>
-							<input type="radio" id="bottle-amber" name="bottleType" value="Amber">
-							<label for="bottle-amber">Amber</label>
-						</div>
+					<h4>2. ボトルの選択</h4>
+					<div class="bottle-preview">
+						<img id="bottle-image" th:src="@{/images/IMG_0289.JPG}" alt="Bottle">
+					</div>
+					<div class="bottle-selection">
+						<input type="radio" id="bottle-clear" name="bottleType" value="Clear" checked>
+						<label for="bottle-clear">Clear</label>
+						<input type="radio" id="bottle-amber" name="bottleType" value="Amber">
+						<label for="bottle-amber">Amber</label>
+					</div>
 				</div>
 
 				<button type="submit" class="order-button">BLEND MY PERFUME</button>
@@ -59,7 +56,6 @@
 	</div>
 
 	<div th:replace="~{address-section :: address}"></div>
-
 	<div th:replace="~{preview-modal :: modal}"></div>
 
 	<script th:src="@{/js/script.js}"></script>

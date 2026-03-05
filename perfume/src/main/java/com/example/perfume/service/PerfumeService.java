@@ -1,29 +1,40 @@
-// src/main/java/com/example/perfume/service/PerfumeService.java
 package com.example.perfume.service;
 
-import com.example.perfume.entity.Order;
-import org.springframework.stereotype.Service;
 import java.util.List;
+import org.springframework.stereotype.Service;
+import com.example.perfume.entity.Order;
+import com.example.perfume.dto.OrderForm; // フォームデータ（DTO）をインポート
 
 @Service
 public class PerfumeService {
 
-	public Order createOrder(List<String> scents, String bottleType) {
+	/**
+	 * OrderForm(DTO)を受け取り、バリデーション済みの情報をOrder(Entity)に変換・構築します
+	 */
+	public Order createOrder(OrderForm form) {
 		Order order = new Order();
+
+		// 1. 基本情報の詰め替え（DTO -> Entity）
+		List<String> scents = form.getScents();
 		order.setScents(scents);
-		order.setBottleType(bottleType);
+		order.setBottleType(form.getBottleType());
+
+		// 2. お届け先情報の詰め替え（ここを新規追加）
+		order.setUserName(form.getUserName());
+		order.setUserAddress(form.getUserAddress());
 
 		int scentCount = (scents != null) ? scents.size() : 0;
 
-		// 1. 金額計算
+		// 3. 金額計算
 		order.setTotalPrice(calculatePrice(scentCount));
 
-		// 2. メッセージ判定
+		// 4. タイトルとメッセージの判定
 		determineBlendDetails(order, scents, scentCount);
 
 		return order;
 	}
 
+	// 金額計算ロジック
 	private int calculatePrice(int count) {
 		if (count == 1)
 			return 8000;
@@ -32,6 +43,7 @@ public class PerfumeService {
 		return 0;
 	}
 
+	// 調合の詳細（タイトル・メッセージ）決定ロジック
 	private void determineBlendDetails(Order order, List<String> scents, int count) {
 		String title = "Custom Blend";
 		String message = "あなたのために、特別な香りを調合いたします。";
