@@ -1,50 +1,36 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" th:href="@{/css/style.css}">
-</head>
+<head th:replace="~{layout/fragments :: head('Your Special Blend')}"></head>
 
-<body>
+<body class="result-body">
+	<div th:replace="~{layout/fragments :: background}"></div>
 
-	<div id="main-content">
-		<img th:src="@{/images/welcome.gif}" alt="welcome Video" id="bg-gif">
-		<div class="container result-card">
-			<header>
-				<h1 class="brand-logo-small">ATELIER DE PARFUM</h1>
-				<p class="status-tag">Order Received</p>
-			</header>
+	<div class="result-card">
+		<p class="thank-you-text">THANK YOU</p>
+		<h1 class="blend-title" th:text="${title}">Order Received</h1>
+		<p class="blend-message" th:text="${message}">Order Message</p>
 
-			<div class="receipt-body">
-				<div class="section">
-					<h3>Selected Scents</h3>
-					<div class="scent-selection">
-						<div th:each="s : ${selectedScents}" class="scent-option result-item">
-							<span class="check-mark">✓</span>
-							<label th:text="${s}"></label>
-						</div>
-						<div th:if="${selectedScents == null || selectedScents.isEmpty()}" class="scent-option">
-							<label>No Scent Selected</label>
-						</div>
-					</div>
-				</div>
-
-				<div class="section">
-					<h3>Selected Bottle</h3>
-					<div class="bottle-selection">
-						<div class="bottle-option result-item">
-							<span class="check-mark">✓</span>
-							<label th:text="${selectedBottle} + ' Bottle'"></label>
-						</div>
-					</div>
+		<div class="receipt-body">
+			<div class="section">
+				<h3>Selected Blend</h3>
+				<div class="details">
+					<p><strong>Scent:</strong>
+						<span th:each="s, iterStat : ${selectedScents}"
+							th:text="${s} + ${!iterStat.last ? ' & ' : ''}"></span>
+					</p>
+					<p><strong>Bottle:</strong> <span th:text="${selectedBottle}"></span></p>
+					<hr>
+					<p class="price-tag">
+						<strong>Total Price:</strong>
+						<span th:text="'¥' + ${#numbers.formatInteger(totalPrice, 3, 'COMMA')}"></span>
+					</p>
 				</div>
 			</div>
 		</div>
-	</div>
-	</div>
 
+		<a th:href="@{/}" class="order-button" style="text-decoration: none;">BACK TO TOP</a>
+	</div>
 </body>
 
 </html>

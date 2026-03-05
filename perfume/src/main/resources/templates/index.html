@@ -1,17 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>ATELIER DE PARFUM</title>
-	<link rel="stylesheet" th:href="@{/css/style.css}">
-</head>
+<head th:replace="~{layout/fragments :: head('ATELIER DE PARFUM')}"></head>
 
 <body>
+	<div th:replace="~{layout/fragments :: background}"></div>
 
 	<div id="welcome-screen">
-		<img th:src="@{/images/welcome.gif}" alt="Welcome Video" id="bg-gif">
 		<div class="welcome-content">
 			<h1 class="brand-logo-large">ATELIER DE PARFUM</h1>
 			<p class="tap-to-enter">CLICK TO ENTER</p>
@@ -19,8 +14,15 @@
 	</div>
 
 	<div id="main-content" class="hidden">
+		<div th:replace="~{introduction :: scent-intro-parts}"></div>
 
-		<img th:src="@{/images/welcome.gif}" id="bg-gif-main" alt="Background">
+		<div class="container reveal">
+			<form th:action="@{/order}" method="post" id="perfumeForm">
+			</form>
+		</div>
+	</div>
+
+	<div id="main-content" class="hidden">
 		<div class="container">
 			<header>
 				<h2>Order Your Scent</h2>
@@ -29,69 +31,37 @@
 
 			<form th:action="@{/order}" method="post" id="perfumeForm">
 				<div class="section">
-					<h3>1. お好きな香りを2つまでお選びください</h3>
+					<h4>1. お好きな香りを2つまで</h4>
 					<div class="scent-selection">
-						<div class="scent-option">
-							<input type="checkbox" id="rose" name="scents" value="Rose" class="scent-check">
-							<label for="rose">Rose <span>- 華やかな香り</span></label>
-						</div>
-						<div class="scent-option">
-							<input type="checkbox" id="citrus" name="scents" value="Citrus" class="scent-check">
-							<label for="citrus">Citrus <span>- 爽やかな香り</span></label>
-						</div>
-						<div class="scent-option">
-							<input type="checkbox" id="lavender" name="scents" value="Lavender" class="scent-check">
-							<label for="lavender">Lavender <span>- 安らぎの香り</span></label>
-						</div>
-						<div class="scent-option">
-							<input type="checkbox" id="woody" name="scents" value="Woody" class="scent-check">
-							<label for="woody">Woody <span>- 温かい香り</span></label>
+						<div th:each="s : ${ {'Rose', 'Citrus', 'Lavender', 'Woody'} }" class="scent-option">
+							<input type="checkbox" th:id="${s}" name="scents" th:value="${s}" class="scent-check">
+							<label th:for="${s}" th:text="${s}"></label>
 						</div>
 					</div>
 				</div>
 
 				<div class="section">
-					<h3>2. お好きなボトルをお選びください</h3>
-					<div class="bottle-preview" style="text-align: center; margin-bottom: 20px;">
-						<img id="bottle-image" th:src="@{/images/IMG_0289.JPG}" alt="Bottle Preview"
-							style="height: 180px; transition: opacity 0.3s ease; border-radius: 4px;">
-					</div>
-					<div class="bottle-selection">
-						<div class="bottle-option">
-							<input type="radio" id="bottle-clear" name="bottleType" value="Clear" checked
-								class="bottle-radio">
-							<label for="bottle-clear">Clear <span>- 透明なボトル</span></label>
+					<h4>2. ボトルの選択</h3>
+						<div class="bottle-preview">
+							<img id="bottle-image" th:src="@{/images/IMG_0289.JPG}" alt="Bottle">
 						</div>
-						<div class="bottle-option">
-							<input type="radio" id="bottle-amber" name="bottleType" value="Amber" class="bottle-radio">
-							<label for="bottle-amber">Amber <span>- 琥珀色のボトル</span></label>
+						<div class="bottle-selection">
+							<input type="radio" id="bottle-clear" name="bottleType" value="Clear" checked>
+							<label for="bottle-clear">Clear</label>
+							<input type="radio" id="bottle-amber" name="bottleType" value="Amber">
+							<label for="bottle-amber">Amber</label>
 						</div>
-					</div>
 				</div>
 
 				<button type="submit" class="order-button">BLEND MY PERFUME</button>
 			</form>
-
-			<div id="preview-modal" class="modal-hidden">
-				<div class="modal-content">
-					<h3>CONFIRM YOUR BLEND</h3>
-					<p>以下の内容で調合を開始しますか？</p>
-
-					<div class="preview-details">
-						<p><strong>SCENTS:</strong> <span id="preview-scents"></span></p>
-						<p><strong>BOTTLE:</strong> <span id="preview-bottle"></span></p>
-						<p><strong>TOTAL PRICE:</strong> <span id="preview-price"></span></p>
-					</div>
-
-					<div class="modal-buttons">
-						<button type="button" id="back-to-edit" class="secondary-button">修正する</button>
-						<button type="button" id="confirm-order" class="order-button">YES, BLEND IT!</button>
-					</div>
-				</div>
-			</div>
-
 		</div>
 	</div>
+
+	<div th:replace="~{address-section :: address}"></div>
+
+	<div th:replace="~{preview-modal :: modal}"></div>
+
 	<script th:src="@{/js/script.js}"></script>
 </body>
 

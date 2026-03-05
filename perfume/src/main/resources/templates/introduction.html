@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<div th:fragment="scent-intro-parts" class="intro-container">
+
+		<header class="intro-header reveal">
+			<p class="step-label">THE SCENTS</p>
+			<h2>Explore Our Library</h2>
+			<p class="sub-text">それぞれの香りが持つ物語を感じてください</p>
+		</header>
+
+		<section class="base-intro reveal">
+			<div class="base-content">
+				<span class="base-tag">THE BASE</span>
+				<h3>こだわりのベースオイル</h3>
+				<p>
+					私たちの香水は、肌に優しく香りを最大限に引き出す、高品質な植物性スクワランをベースに使用しています。<br>
+					アルコール特有のツンとした刺激を抑え、まろやかで持続性の高い香りの体験を約束します。
+				</p>
+			</div>
+		</section>
+
+		<section class="scent-intro reveal">
+			<div class="scent-image">
+				<img th:src="@{/images/rose_detail.jpg}" alt="Rose">
+			</div>
+			<div class="scent-desc">
+				<h3>ROSE</h3>
+				<p>朝露に濡れた花びらのような、瑞々しくも高貴な香り。</p>
+			</div>
+		</section>
+
+		<section class="scent-intro reveal">
+			<div class="scent-image">
+				<img th:src="@{/images/citrus_detail.jpg}" alt="Citrus">
+			</div>
+			<div class="scent-desc">
+				<h3>CITRUS</h3>
+				<p>太陽の光を浴びた果実。心を前向きにする、弾けるような爽快感。</p>
+			</div>
+		</section>
+
+		<div class="intro-footer reveal">
+			<p>準備ができたら、あなただけの調合を始めましょう</p>
+			<a href="#perfumeForm" class="order-button scroll-link">GO TO BLEND</a>
+		</div>
+	</div>
+</body>
+
+</html>

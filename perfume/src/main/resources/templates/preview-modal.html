@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="modal" id="preview-modal" class="modal-hidden">
+	<div class="modal-content">
+		<h3>CONFIRM YOUR BLEND</h3>
+		<div class="preview-details">
+			<p><strong>SCENTS:</strong> <span id="preview-scents"></span></p>
+			<p><strong>BOTTLE:</strong> <span id="preview-bottle"></span></p>
+			<p><strong>TOTAL:</strong> <span id="preview-price"></span></p>
+		</div>
+		<div class="modal-buttons">
+			<button type="button" id="back-to-edit" class="secondary-button">修正する</button>
+			<button type="button" id="confirm-order" class="order-button">YES, BLEND IT!</button>
+		</div>
+	</div>
+</div>
+
+</html>
