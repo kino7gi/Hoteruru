@@ -1,63 +1,50 @@
 package com.example.perfume.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
-import com.example.perfume.dto.OrderForm;
-import com.example.perfume.dto.UserForm;
-import com.example.perfume.entity.Order;
-import com.example.perfume.repository.OrderRepository;
-import com.example.perfume.service.PerfumeService;
-
-import jakarta.validation.Valid;
+import com.example.perfume.model.dto.OrderForm;
 
 @Controller
+@SessionAttributes("orderForm") // セッションで注文情報を保持
 public class PerfumeController {
 
-	@Autowired
-	private PerfumeService perfumeService;
-
-	@Autowired
-	private OrderRepository orderRepository;
-
-	@GetMapping("/")
-	public String index(Model model) {
-		// Thymeleafのフォームと連携させるために空のオブジェクトを渡す
-		model.addAttribute("orderForm", new OrderForm());
-		model.addAttribute("userForm", new UserForm());
-		return "index";
+	// 最初に注文フォームを初期化
+	@ModelAttribute("orderForm")
+	public OrderForm setUpForm() {
+		return new OrderForm();
 	}
 
+	@GetMapping("/")
+	public String top() {
+		return "top";
+	}
+
+	@GetMapping("/intro")
+	public String intro() {
+		return "intro";
+	}
+
+	@GetMapping("/mix")
+	public String mix() {
+		return "mix";
+	}
+
+	// 4. お届け先入力へ（調合結果を保存）
 	@PostMapping("/order")
-	public String placeOrder(
-			@Valid @ModelAttribute("orderForm") OrderForm orderForm, // バリデーションを実行
-			BindingResult result, // チェック結果を格納
-			Model model) {
+	public String toOrder(@ModelAttribute("orderForm") OrderForm form) {
+		return "order";
+	}
 
-		// --- 1. Java側でのバリデーション（誤字・未入力チェック） ---
-		if (result.hasErrors()) {
-			// エラーがある場合は index.html に戻る
-			// JS側で「エラーがある場合は住所入力から表示」する制御が必要
-			model.addAttribute("hasErrors", true);
-			return "index";
-		}
-
-		// --- 2. Serviceで注文エンティティの生成（計算・判定ロジック） ---
-		// 前回のService修正で引数を OrderForm に変更している前提です
-		Order order = perfumeService.createOrder(orderForm);
-
-		// --- 3. Repositoryで保存 ---
-		orderRepository.save(order);
-
-		// --- 4. 結果画面（result.html）へデータを渡す ---
-		model.addAttribute("order", order);
-		// まとめて order を渡すことで result.html 側で [[${order.title}]] などと書けます
-
-		return "result";
+	// 5. 完了画面へ
+	@PostMapping("/complete")
+	public String complete(@ModelAttribute("orderForm") OrderForm form, SessionStatus status) {
+		// ここでDB保存処理などを入れる
+		// status.setComplete(); // 完了後にセッションをクリアする場合
+		return "complete";
 	}
 }

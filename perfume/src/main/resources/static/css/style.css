@@ -1,374 +1,116 @@
-/* --- 1. Reset & Base Settings --- */
-* {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
+@charset "UTF-8";
+
+/* --- 1. お届け先入力画面 (Order Page) --- */
+
+/* --- 入力セクションの基本 --- */
+#inputSection {
+	display: block;
+	opacity: 1;
+	transform: translateY(0);
+	transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-body {
-	font-family: 'Helvetica Neue', Arial, sans-serif;
-	background-color: transparent;
-	overflow-x: hidden;
-	color: #333;
-	/* 基本の文字のカラー */
-}
-
-#bg-gif {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100vw;
-	height: 100vh;
-	object-fit: cover;
-	z-index: -1;
-	opacity: 0.7;
-	pointer-events: none;
-	filter: brightness(90%);
-}
-
-/* --- 2. Welcome Screen --- */
-#welcome-screen {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	z-index: 9999;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	cursor: pointer;
-	transition: opacity 0.8s ease;
-}
-
-.welcome-content {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	color: #fff;
-}
-
-.brand-logo-large {
-	font-size: clamp(2rem, 8vw, 3.5rem);
-	font-weight: 200;
-	letter-spacing: 0.6rem;
-}
-
-/* --- introdaction page --- */
-.intro-body {
-	background-color: #111;
-	color: #fff;
-	/* 紹介文は黒背景に白文字が映えます */
-}
-
-.intro-container {
-	max-width: 800px;
-	margin: 0 auto;
-	padding: 100px 20px;
-}
-
-.scent-intro {
-	display: flex;
-	align-items: center;
-	gap: 40px;
-	margin-bottom: 150px;
-	/* スクロールさせるために余白を広く */
-}
-
-.scent-intro:nth-child(even) {
-	flex-direction: row-reverse;
-	/* 画像と文字を左右交互に入れ替える */
-}
-
-.scent-image img {
-	width: 300px;
-	height: 400px;
-	object-fit: cover;
-	border-radius: 2px;
-}
-
-/* スクロールで浮かび上がるアニメーションの設定 */
-.reveal {
+/* JSでこれがつくとスッと消える */
+#inputSection.is-hidden {
 	opacity: 0;
-	transform: translateY(30px);
-	transition: all 1.2s ease-out;
+	transform: translateY(-20px);
+	/* display: none はJS側の setTimeout で制御するのでここでは書かない */
 }
 
-.reveal.active {
+/* --- 確認セクション（プレビュー）の基本 --- */
+#previewArea {
+	display: none;
+	/* 最初は絶対に見せない */
+	opacity: 0;
+	transform: translateY(20px);
+	transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+/* JSでこれがつくとスッと現れる */
+#previewArea.is-active {
 	opacity: 1;
 	transform: translateY(0);
 }
 
-/* --- 4. Introduction Page Specific --- */
-
-.scent-image {
-	/* 重要：画像が枠からはみ出ないようにする */
-	overflow: hidden;
-	border-radius: 2px;
-	/* お好みで角を少し丸く */
-	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-	/* 少し影をつけて立体感を出す */
-}
-
-.scent-image img {
-	/* 通常時の設定 */
-	width: 300px;
-	/* お好みのサイズに調整 */
-	height: 400px;
-	object-fit: cover;
-
-	/* アニメーションの設定 (ここが重要！) */
-	/* 変化にかかる時間（0.6秒）と動きの種類（ease-out）を指定 */
-	transition: transform 0.6s ease-out, filter 0.6s ease-out;
-
-	/* 最初は等倍、普通の明るさ */
-	transform: scale(1);
-	filter: brightness(100%);
-}
-
-/* --- マウスを乗せたとき（ホバー時）の動き --- */
-.scent-intro:hover .scent-image img {
-	/* 1.1倍に拡大する */
-	transform: scale(1.1);
-
-	/* 2. 少し明るくする（コントラストを上げるなど、お好みで） */
-	filter: brightness(110%);
-}
-
-
-
-/* --- 3. Main Layout (共通レイアウト) --- */
-#main-content,
-.result-body {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	min-height: 100vh;
-	width: 100%;
-	padding: 20px;
-}
-
-.hidden {
+/* 入力画面を消すためのクラス */
+#inputSection.is-hidden {
 	display: none !important;
-	opacity: 0;
 }
 
-/* 白いカード共通デザイン */
-.container,
-.address-card,
-.result-card {
-	background: rgba(255, 255, 255, 0.85);
-	backdrop-filter: blur(12px);
-	border-radius: 4px;
-	box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
-	text-align: center;
-	width: 100%;
-	margin: auto;
-}
-
-.container {
+/* モーダル（確認画面）の装飾 */
+.modal-content {
+	background: transparent;
 	padding: 40px;
-	max-width: 450px;
+	border: 1px solid #eee;
+	text-align: center;
+	max-width: 500px;
+	margin: 50px auto;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+	/* 浮かび上がる影 */
 }
 
-/* --- 4. Address Section (住所入力画面を中央に) --- */
-#address-section {
-	position: fixed;
-	/* 画面に対して固定 */
+/* --- 2. 香り調合画面 (Mix Page) --- */
+
+.perfume-visual {
+	position: relative;
+	width: 300px;
+	height: 400px;
+	margin: 0 auto;
+}
+
+.perfume-visual img {
+	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;
-	height: 100%;
-	display: flex;
-	/* 中身を中央に寄せる */
-	justify-content: center;
-	align-items: center;
-	z-index: 500;
-	/* 背景より前、モーダルより後ろ */
-	background: transparent;
+	transition: all 0.5s ease;
 }
 
-.address-card {
-	background: rgba(255, 255, 255, 0.95);
-	backdrop-filter: blur(10px);
-	padding: 40px;
-	max-width: 400px;
-	width: 90%;
+#img-liquid {
+	z-index: 1;
+}
+
+#img-bottle {
+	z-index: 2;
+}
+
+/* --- 3. 完了画面 (Complete Page) --- */
+
+.complete-container {
+	max-width: 600px;
+	margin: 0 auto;
+	padding: 100px 20px;
+	text-align: center;
+}
+
+.summary-box {
+	background: #f9f9f9;
+	padding: 20px;
+	margin: 30px 0;
 	border-radius: 8px;
-	box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
-	text-align: center;
-	position: relative;
-}
-
-.section-header {
-	text-align: center;
-	margin-bottom: 30px;
-}
-
-.step-label {
-	font-size: 0.6rem;
-	letter-spacing: 2px;
-	color: #aaa;
-	text-transform: uppercase;
-}
-
-.sub-text {
-	font-size: 0.75rem;
-	color: #888;
-	margin-top: 5px;
-}
-
-.address-inputs {
-	display: flex;
-	flex-direction: column;
-	gap: 20px;
-	margin-bottom: 30px;
 	text-align: left;
 }
 
-.input-group {
-	display: flex;
-	flex-direction: column;
-	gap: 8px;
-}
-
-.input-group label {
-	font-size: 0.65rem;
-	color: #999;
-	letter-spacing: 1.5px;
-	text-transform: uppercase;
-}
-
-.input-group input {
-	padding: 12px 5px;
-	border: 1px solid #ddd;
-	border-bottom: 1px solid #ddd;
-	background: transparent;
-	font-size: 0.9rem;
-	outline: none;
-	transition: border-color 0.4s;
-	color: #333;
+textarea {
 	width: 100%;
+	height: 120px;
+	margin-top: 10px;
+	padding: 15px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	resize: none;
 }
 
-.input-group input:focus {
-	border-bottom: 1px solid #111;
-}
-
-/* --- 5. Buttons --- */
-.order-button {
-	background: #111;
+.btn-home {
+	margin-top: 40px;
+	padding: 15px 40px;
+	background-color: #333;
 	color: #fff;
 	border: none;
-	padding: 15px;
-	width: 100%;
-	letter-spacing: 2px;
-	font-weight: bold;
 	cursor: pointer;
-	text-transform: uppercase;
-	text-decoration: none;
-	display: block;
-	font-size: 0.8rem;
-	transition: 0.3s;
+	transition: background 0.3s;
 }
 
-.order-button:hover {
-	background: #333;
-}
-
-.secondary-button {
-	background: transparent;
-	border: 1px solid #ddd;
-	padding: 10px;
-	width: 100%;
-	margin-top: 10px;
-	cursor: pointer;
-	font-size: 0.75rem;
-	color: #888;
-}
-
-/* --- 6. Result Page --- */
-.result-card {
-	padding: 30px 25px;
-	max-width: 320px;
-}
-
-.thank-you-text {
-	font-size: 0.7rem;
-	letter-spacing: 3px;
-	color: #aaa;
-	margin-bottom: 5px;
-}
-
-.blend-title {
-	font-size: 1.3rem;
-	font-weight: 300;
-	margin-bottom: 10px;
-}
-
-.details {
-	background: rgba(0, 0, 0, 0.03);
-	padding: 15px;
-	margin-bottom: 20px;
-	text-align: left;
-}
-
-.details p {
-	font-size: 0.8rem;
-	margin: 5px 0;
-	display: flex;
-	justify-content: space-between;
-}
-
-.price-tag {
-	font-size: 1rem;
-	font-weight: bold;
-	border-top: 1px solid #ddd;
-	padding-top: 8px;
-	margin-top: 8px;
-	text-align: right;
-	display: block;
-}
-
-/* --- 7. Modal (Preview) --- */
-#preview-modal {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: rgba(0, 0, 0, 0.7);
-	backdrop-filter: blur(5px);
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	z-index: 10000;
-}
-
-.modal-content {
-	background: #fff;
-	padding: 30px;
-	width: 90%;
-	max-width: 380px;
-	border-radius: 8px;
-}
-
-.modal-hidden {
-	display: none !important;
-}
-
-/* 香り選択の画像調整 */
-#bottle-image {
-	max-height: 140px;
-	object-fit: contain;
-}
-
-/* selection-area が正しく切り替わるための設定 */
-#selection-area.hidden {
-	display: none !important;
-}
-
-#selection-area {
-	display: block;
-	opacity: 0;
+.btn-home:hover {
+	background-color: transparent;
 }

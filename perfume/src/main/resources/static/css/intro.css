@@ -1,0 +1,232 @@
+@charset "UTF-8";
+
+/* Google Fontsの読み込み */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;500&display=swap');
+
+.intro-container {
+	/* 1. 最大幅を1100pxから960px〜1000px程度に絞ると、より中心に凝縮されます */
+	max-width: 1000px;
+	margin: 0 auto;
+	padding: 100px 40px;
+	/* 左右のパディングを少し増やして余白を確保 */
+	text-align: center;
+}
+
+/* メイン見出し */
+.intro-text h1 {
+	font-family: 'Cormorant Garamond', serif;
+	font-size: 3.5rem;
+	letter-spacing: 0.6rem;
+	font-weight: 300;
+	text-transform: uppercase;
+	margin-bottom: 20px;
+}
+
+.intro-text p {
+	font-family: 'serif';
+	color: #666;
+	letter-spacing: 0.2rem;
+	margin-bottom: 100px;
+	/* 下との間隔を広げてゆとりを持たせる */
+}
+
+/* --- 香りのリストレイアウト（Z型） --- */
+
+.perfume-list {
+	display: flex;
+	flex-direction: column;
+	gap: 150px;
+	/* アイテム間の距離を少し広げて優雅に */
+	margin-bottom: 150px;
+}
+
+.perfume-item {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	/* Space-betweenからCenterに変更して中央寄せを強調 */
+	width: 100%;
+	gap: 80px;
+	/* 画像とテキストの間の距離を固定して中央に寄せる */
+	cursor: default;
+}
+
+/* 左右反転の制御 */
+.row-reverse {
+	flex-direction: row-reverse;
+}
+
+/* 画像のエリア */
+.img-wrapper {
+	/* 2. flex-basisを少し小さくし、中央に寄る余地を作ります */
+	flex: 0 0 50%;
+	height: 500px;
+	overflow: hidden;
+	cursor: pointer;
+	border-radius: 2px;
+}
+
+/* テキスト部分の装飾 */
+.text-wrapper {
+	flex: 0 1 350px;
+	/* 幅を固定気味にすることで、文字が横に広がりすぎず中心にまとまります */
+	text-align: left;
+	/* padding: 0 20px; 不要なパディングを削除 */
+}
+
+/* --- 以下、変更なしまたは微調整 --- */
+
+.perfume-item img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	filter: grayscale(30%);
+	transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+.perfume-item:hover img {
+	filter: grayscale(0%);
+	transform: scale(1.03);
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.scent-number {
+	font-family: 'Cormorant Garamond', serif;
+	font-size: 1rem;
+	color: #999;
+	display: block;
+	margin-bottom: 10px;
+}
+
+.text-wrapper h2 {
+	font-family: 'Cormorant Garamond', serif;
+	font-size: 2.5rem;
+	letter-spacing: 0.3rem;
+	margin-bottom: 15px;
+	font-weight: 400;
+	text-transform: uppercase;
+	line-height: 1.2;
+}
+
+.text-wrapper p {
+	font-size: 0.95rem;
+	line-height: 1.8;
+	color: #555;
+	letter-spacing: 0.05rem;
+}
+
+/* --- スクロールアニメーション（省略せずに維持） --- */
+.perfume-item.fade-in {
+	opacity: 0;
+	transform: translateX(40px);
+	/* 移動距離を少し短くすると上品です */
+	transition: all 1.2s ease;
+}
+
+.perfume-item.fade-in.row-reverse {
+	transform: translateX(-40px);
+}
+
+.perfume-item.is-visible {
+	opacity: 1;
+	transform: translateX(0);
+}
+
+/* ナビゲーション全体の配置 */
+.navigation-area {
+	margin-top: 100px;
+	/* 上のコンテンツとの距離をしっかり取る */
+	margin-bottom: 150px;
+	text-align: center;
+	/* 中央寄せ */
+	clear: both;
+}
+
+/* ボタンのデザインを「導線」として再定義 */
+.btn-next {
+	display: inline-block;
+	font-family: 'Cormorant Garamond', serif;
+	text-decoration: none;
+	color: #333;
+	font-size: 1.1rem;
+	letter-spacing: 0.3rem;
+	/* 文字間隔を広げて高級感を */
+	text-transform: uppercase;
+
+	/* 枠線ではなく、細い下線でミニマルに */
+	border-bottom: 1px solid #ccc;
+	padding: 15px 40px;
+	transition: all 0.6s cubic-bezier(0.2, 1, 0.3, 1);
+	position: relative;
+}
+
+/* ホバー時の優雅な演出 */
+.btn-next:hover {
+	color: #999;
+	border-bottom-color: #333;
+	letter-spacing: 0.45rem;
+	/* じわっと広がる動き */
+	transform: translateY(-3px);
+	/* 軽く浮き上がらせる */
+}
+
+/* 装飾的な矢印（オプション） */
+.btn-next::after {
+	content: '→';
+	font-size: 0.8rem;
+	margin-left: 15px;
+	vertical-align: middle;
+	opacity: 0.6;
+}
+
+/* モーダル全体の背景 */
+.modal-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.6);
+	/* 背景を暗く */
+	backdrop-filter: blur(4px);
+	/* 背景を少しぼかすとおしゃれ */
+	z-index: 9999;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	opacity: 0;
+	transition: opacity 0.5s ease;
+}
+
+/* 表示された時の背景 */
+.modal-overlay.is-active {
+	opacity: 1;
+}
+
+/* 白いボックス部分 */
+.modal-content {
+	background: white;
+	padding: 2rem;
+	border-radius: 15px;
+	width: 80%;
+	max-width: 400px;
+	position: relative;
+
+	/* 初期状態：少し下に配置して透明にする */
+	transform: translateY(30px);
+	transition: transform 0.5s ease;
+}
+
+/* 表示された時のボックス：定位置に戻す */
+.modal-overlay.is-active .modal-content {
+	transform: translateY(0);
+}
+
+.close-btn {
+	position: absolute;
+	top: 10px;
+	right: 15px;
+	font-size: 2rem;
+	cursor: pointer;
+	color: #999;
+}

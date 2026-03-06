@@ -1,0 +1,85 @@
+@charset "UTF-8";
+@charset "UTF-8";
+
+/* Google Fontsの読み込み */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;500&display=swap');
+
+#inputSection {
+	max-width: 500px;
+	margin: 0 auto;
+	text-align: center;
+	padding: 40px 20px;
+}
+
+#inputSection h2 {
+	font-family: 'Cormorant Garamond', serif;
+	font-size: 2.2rem;
+	letter-spacing: 0.4rem;
+	text-transform: uppercase;
+	font-weight: 300;
+	margin-bottom: 50px;
+	color: #2c2c2c;
+}
+
+/* 入力グループのスタイル（下線スタイル） */
+.input-group {
+	margin-bottom: 40px;
+	text-align: left;
+	position: relative;
+}
+
+.input-group label {
+	display: block;
+	font-family: 'Cormorant Garamond', serif;
+	font-size: 0.9rem;
+	letter-spacing: 0.15rem;
+	color: #888;
+	margin-bottom: 8px;
+	text-transform: uppercase;
+}
+
+.input-group input {
+	width: 100%;
+	border: none;
+	border-bottom: 1px solid #ddd;
+	/* 下線のみ */
+	background: transparent;
+	/* 背景を透過させてGIFを見せる */
+	padding: 10px 0;
+	font-size: 1.1rem;
+	color: #333;
+	outline: none;
+	transition: border-color 0.4s;
+}
+
+/* 入力中（フォーカス時）の演出 */
+.input-group input:focus {
+	border-bottom-color: #333;
+}
+
+/* 入力プレースホルダーの色 */
+.input-group input::placeholder {
+	color: #ccc;
+	font-size: 0.9rem;
+}
+
+/* 確認ボタン */
+.btn-preview {
+	margin-top: 20px;
+	background: #333;
+	color: #fff;
+	border: none;
+	padding: 15px 40px;
+	font-family: 'Cormorant Garamond', serif;
+	font-size: 1rem;
+	letter-spacing: 0.2rem;
+	cursor: pointer;
+	transition: all 0.4s ease;
+	text-transform: uppercase;
+}
+
+.btn-preview:hover {
+	background: #555;
+	letter-spacing: 0.4rem;
+	/* じわっと広がる */
+}

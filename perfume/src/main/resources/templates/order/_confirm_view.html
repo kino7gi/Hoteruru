@@ -1,0 +1,24 @@
+<section id="previewArea" th:fragment="confirm_view">
+	<div class="modal-content">
+		<h3>Confirmation</h3>
+
+		<dl>
+			<dt>Selected Scent</dt>
+			<dd th:text="${orderForm.scentId}">Floral</dd>
+
+			<dt>Selected Bottle</dt>
+			<dd th:text="${orderForm.bottleId}">Square</dd>
+
+			<dt>Destination</dt>
+			<dd id="displayAddress"></dd>
+
+			<dt>Customer Name</dt>
+			<dd id="displayName"></dd>
+		</dl>
+
+		<div class="preview-actions">
+			<button type="button" class="btn-back" onclick="hidePreview()">Back to edit</button>
+			<button type="submit" form="addressForm" class="btn-submit">Confirm Order</button>
+		</div>
+	</div>
+</section>

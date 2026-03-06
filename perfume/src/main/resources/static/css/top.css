@@ -1,0 +1,83 @@
+@charset "UTF-8";
+@charset "UTF-8";
+
+/* Google Fontsの読み込み（セリフ体） */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;500&display=swap');
+
+.top-wrapper {
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+}
+
+/* ロゴコンテナ */
+.logo-container {
+	text-align: center;
+	transition: all 2s ease;
+}
+
+/* メインの文字（ブランド名） */
+.brand-title {
+	font-family: 'Cormorant Garamond', serif;
+	font-size: 5rem;
+	/* 大きく */
+	font-weight: 300;
+	/* 細身で繊細に */
+	letter-spacing: 1.2rem;
+	/* 文字の間隔を広く */
+	color: #2c2c2c;
+	text-transform: uppercase;
+	margin: 0;
+
+	/* ぼかしから浮かび上がる演出 */
+	filter: blur(12px);
+	opacity: 0;
+	transition: opacity 3s ease, filter 3s ease;
+}
+
+/* サブテキスト */
+.sub-text {
+	font-family: 'Cormorant Garamond', serif;
+	font-size: 1.2rem;
+	letter-spacing: 0.5rem;
+	color: #888;
+	margin-top: 20px;
+	opacity: 0;
+	transition: opacity 3s ease 1s;
+	/* ロゴより1秒遅れて出る */
+}
+
+/* リンクの設定 */
+.brand-link {
+	text-decoration: none;
+	display: block;
+}
+
+/* JavaScriptでクラスがついた時の動き */
+.is-visible .brand-title {
+	filter: blur(0);
+	opacity: 1;
+}
+
+.is-visible .sub-text {
+	opacity: 1;
+}
+
+/* 優雅にふわふわ揺れるアニメーション */
+.logo-container.is-visible {
+	animation: elegantFloat 6s ease-in-out infinite;
+}
+
+@keyframes elegantFloat {
+
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+
+	50% {
+		transform: translateY(-15px);
+	}
+}

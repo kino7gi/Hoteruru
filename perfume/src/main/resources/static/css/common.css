@@ -1,0 +1,23 @@
+@charset "UTF-8";
+
+body {
+	/* 背景画像の設定 */
+	background-image: url('/images/welcome.gif');
+	/* GIFのパス */
+	background-size: cover;
+	/* 画面全体を覆う */
+	background-attachment: fixed;
+	/* スクロールしても背景は動かさない（高級感が出ます） */
+	background-position: center;
+	/* 中央合わせ */
+	background-repeat: no-repeat;
+
+	/* 文字の読みやすさを確保するためのオーバーレイ（任意） */
+	/* 背景が明るすぎる/暗すぎる場合に、薄い膜を張る設定です */
+	background-color: rgba(255, 255, 255, 0.5);
+	background-blend-mode: overlay;
+
+	margin: 0;
+	padding: 0;
+	min-height: 100vh;
+}

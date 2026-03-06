@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout/header :: common_head}"></head>
+
+<body>
+
+	<main class="complete-container">
+		<section class="thanks-message fade-in">
+			<h1>Thank you.</h1>
+			<p>ご注文ありがとうございます。あなたの香りの物語が始まります。</p>
+		</section>
+
+		<section class="order-summary fade-in">
+			<h3>Order Details</h3>
+			<div class="summary-box">
+				<p>香り：<span th:text="${orderForm.scentId}">シトラス</span></p>
+				<p>ボトル：<span th:text="${orderForm.bottleId}">スクエア</span></p>
+				<p>お届け先：<span th:text="${orderForm.address}">東京都...</span></p>
+			</div>
+		</section>
+
+		<section class="message-section fade-in">
+			<form th:action="@{/}" method="get">
+				<div class="navigation-area">
+					<button type="submit" class="btn-home">トップ画面に戻る</button>
+				</div>
+			</form>
+		</section>
+	</main>
+
+	<script th:src="@{/js/script.js}"></script>
+</body>
+
+</html>

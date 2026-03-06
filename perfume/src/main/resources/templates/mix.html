@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+	<head th:replace="~{layout/header :: common_head}"></head>
+	<link rel="stylesheet" th:href="@{/css/mix.css}">
+</head>
+
+<body>
+	<main class="mix-container">
+		<section class="preview-section fade-in">
+			<div class="perfume-visual">
+				<img id="img-liquid" th:src="@{/images/liquids/default.png}" alt="Liquid" style="z-index: 1;">
+				<img id="img-bottle" th:src="@{/images/bottles/default.png}" alt="Bottle" style="z-index: 2;">
+			</div>
+		</section>
+
+		<form th:action="@{/order}" th:object="${orderForm}" method="post" class="mix-form">
+			<fieldset class="selection-group fade-in">
+				<legend>01. Select Scent</legend>
+				<div class="options">
+					<label>
+						<input type="radio" th:field="*{scentId}" value="rose" onchange="updatePreview()">
+						<span>ROSE</span>
+					</label>
+					<label>
+						<input type="radio" th:field="*{scentId}" value="woody" onchange="updatePreview()">
+						<span>WOODY</span>
+					</label>
+					<label>
+						<input type="radio" th:field="*{scentId}" value="citrus" onchange="updatePreview()">
+						<span>CITRUS</span>
+					</label>
+					<label>
+						<input type="radio" th:field="*{scentId}" value="lavender" onchange="updatePreview()">
+						<span>LAVENDER</span>
+					</label>
+				</div>
+			</fieldset>
+
+			<fieldset class="selection-group fade-in">
+				<legend>02. Select Bottle</legend>
+				<div class="options">
+					<label>
+						<input type="radio" th:field="*{bottleId}" value="square" data-bottle="/images/IMG_0290.JPG"
+							onchange="updatePreview()">
+						<span>SQUARE</span>
+					</label>
+					<label>
+						<input type="radio" th:field="*{bottleId}" value="round" data-bottle="/images/IMG_0289.JPG"
+							onchange="updatePreview()">
+						<span>ROUND</span>
+					</label>
+				</div>
+			</fieldset>
+
+			<nav class="form-navigation fade-in">
+				<button type="submit" class="btn-next">CONFIRM ORDER</button>
+			</nav>
+		</form>
+	</main>
+
+	<script th:src="@{/js/mix.js}"></script>
+	<script th:src="@{/js/script.js}"></script>
+</body>
+
+</html>

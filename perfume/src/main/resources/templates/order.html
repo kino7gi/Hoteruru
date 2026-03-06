@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+	<head th:replace="~{layout/header :: common_head}"></head>
+	<link rel="stylesheet" th:href="@{/css/order_parts.css}">
+	<link rel="stylesheet" th:href="@{/css/confirm_parts.css}">
+</head>
+
+<body>
+	<main class="order-container">
+		<form id="addressForm" th:action="@{/complete}" th:object="${orderForm}" method="post">
+
+			<div th:replace="~{order/_input_form :: input_form}"></div>
+
+			<div th:replace="~{order/_confirm_view :: confirm_view}"></div>
+
+		</form>
+	</main>
+
+	<script th:src="@{/js/script.js}"></script>
+	<script th:src="@{/js/order.js}"></script>
+</body>
+
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+	<head th:replace="~{layout/header :: common_head}"></head>
+	<link rel="stylesheet" th:href="@{/css/top.css}">
+</head>
+
+<body>
+	<main class="top-wrapper">
+		<div class="logo-container" id="topLogo">
+			<a th:href="@{/intro}" class="brand-link">
+				<h1 class="brand-title">L'essence</h1>
+				<p class="sub-text">Fragrance for your soul</p>
+			</a>
+		</div>
+	</main>
+
+	<script>
+		// 画面読み込み時に「is-visible」を付けてアニメーション開始
+		window.onload = () => {
+			setTimeout(() => {
+				document.getElementById('topLogo').classList.add('is-visible');
+			}, 500); // 0.5秒後に開始
+		};
+	</script>
+</body>
+
+</html>
