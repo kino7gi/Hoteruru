@@ -11,13 +11,12 @@
 	<main class="mix-container">
 		<section class="preview-section fade-in">
 			<div class="perfume-visual">
-				<img id="img-liquid" th:src="@{/images/liquids/default.png}" alt="Liquid" style="z-index: 1;">
-				<img id="img-bottle" th:src="@{/images/bottles/default.png}" alt="Bottle" style="z-index: 2;">
+				<img id="img-bottle" th:src="@{/images/IMG_0290.JPG}" alt="Bottle" style="z-index: 2;">
 			</div>
 		</section>
 
 		<form th:action="@{/order}" th:object="${orderForm}" method="post" class="mix-form">
-			<fieldset class="selection-group fade-in">
+			<fieldset class="selection-group">
 				<legend>01. Select Scent</legend>
 				<div class="options">
 					<label>

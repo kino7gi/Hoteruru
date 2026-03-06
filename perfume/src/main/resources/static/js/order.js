@@ -13,44 +13,46 @@ function showPreview() {
 	const inputSec = document.getElementById('inputSection');
 	const previewArea = document.getElementById('previewArea');
 
-	// 入力要素
+	// 1. 各入力欄を取得
+	const postCodeInput = document.getElementById('postCode');
+	const phoneInput = document.getElementById('phoneNumber');
 	const addressInput = document.getElementById('address');
-	const userNameInput = document.getElementById('userName');
+	const nameInput = document.getElementById('userName');
 
-	// 表示用要素
-	const displayAddress = document.getElementById('displayAddress');
-	const displayUserName = document.getElementById('displayUserName'); // 名前用を追加
-
-	// 1. 入力チェック（空白文字のみの場合も考慮）
-	if (!addressInput.value.trim() || !userNameInput.value.trim()) {
-		alert("すべての項目を正しく入力してください");
+	// バリデーション：未入力チェック
+	if (!postCodeInput.value || !phoneInput.value || !addressInput.value || !nameInput.value) {
+		alert("お届け先の情報をすべて入力してください");
 		return;
 	}
 
+	// 2. 確認用ラベル（表示先）を取得
+	const displayPC = document.getElementById('displayPostCode');
+	const displayPN = document.getElementById('displayPhoneNumber');
+	const displayAD = document.getElementById('displayAddress');
+	const displayNM = document.getElementById('displayName');
+
+	// 3. 値を反映する
+	if (displayPC) displayPC.innerText = postCodeInput.value;
+	if (displayPN) displayPN.innerText = phoneInput.value;
+	if (displayAD) displayAD.innerText = addressInput.value;
+	if (displayNM) displayNM.innerText = nameInput.value;
+
+	// 4. 画面切り替え演出
 	isTransitioning = true;
 
-	// 2. 値をプレビューに反映
-	if (displayAddress) {
-		displayAddress.innerText = addressInput.value;
-	}
-	if (displayUserName) {
-		displayUserName.innerText = userNameInput.value;
-	}
-
-	// 3. 入力画面をフェードアウト
+	// 入力画面をフェードアウト
 	inputSec.classList.add('is-hidden');
 
-	// 4. 入力画面が消えきってから、確認画面を出す
+	// 入力画面が消えきってから（600ms後）、確認画面を出す
 	setTimeout(() => {
 		inputSec.style.display = "none";
 		previewArea.style.display = "block";
 
-		// ブラウザの描画タイミングを待ってからアクティブ化
+		// 少し待ってからアクティブ化（フェードイン開始）
 		setTimeout(() => {
 			previewArea.classList.add('is-active');
 			isTransitioning = false; // アニメーション終了
 		}, 50);
-
 	}, 600);
 }
 

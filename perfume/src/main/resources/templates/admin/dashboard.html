@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout/header :: common_head}"></head>
+<link rel="stylesheet" th:href="@{/css/admin.css}">
+
+<body>
+	<main class="admin-container">
+		<h1>Inventory Control</h1>
+
+		<section class="admin-section">
+			<h2>Scent Repertoire</h2>
+			<table class="admin-table">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Stock Count</th>
+						<th>Status</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="scent : ${scents}">
+						<td th:text="${scent.name}">Rose</td>
+						<td>
+							<input type="number" th:value="${scent.stock}" class="input-stock">
+						</td>
+						<td>
+							<span class="status-badge"
+								th:classappend="${scent.stock > 0 ? 'in-stock' : 'out-of-stock'}">
+								[[${scent.stock > 0 ? 'In Stock' : 'Out of Stock'}]]
+							</span>
+						</td>
+						<td><button class="btn-update">Update</button></td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+
+		<section class="admin-section">
+			<h2>Bottle Repertoire</h2>
+			<table class="admin-table">
+				<thead>
+					<tr>
+						<th>Bottle Type</th>
+						<th>Stock Count</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="bottle : ${bottles}">
+						<td th:text="${bottle.name}">Square</td>
+						<td>
+							<input type="number" th:value="${bottle.stock}" class="input-stock">
+						</td>
+						<td><button class="btn-update">Update</button></td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+	</main>
+</body>
+
+</html>

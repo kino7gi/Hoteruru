@@ -2,8 +2,18 @@
 	<h2>Shipping Information</h2>
 
 	<div class="input-group">
+		<label for="postCode">Post Code</label>
+		<input type="text" th:field="*{postCode}" id="postCode" placeholder="000-0000" required>
+	</div>
+
+	<div class="input-group">
 		<label for="address">Destination Address</label>
-		<input type="text" th:field="*{address}" id="address" placeholder="例：東京都中央区銀座 1-2-3" required>
+		<input type="text" th:field="*{address}" id="address" placeholder="住所を入力してください" required>
+	</div>
+
+	<div class="input-group">
+		<label for="phoneNumber">Phone Number</label>
+		<input type="tel" th:field="*{phoneNumber}" id="phoneNumber" placeholder="000-0000-0000" required>
 	</div>
 
 	<div class="input-group">
@@ -11,7 +21,5 @@
 		<input type="text" th:field="*{userName}" id="userName" placeholder="お名前をご入力ください" required>
 	</div>
 
-	<div class="actions">
-		<button type="button" class="btn-preview" onclick="showPreview()">Review Order</button>
-	</div>
+	<button type="button" class="btn-preview" onclick="showPreview()">Review Order</button>
 </section>

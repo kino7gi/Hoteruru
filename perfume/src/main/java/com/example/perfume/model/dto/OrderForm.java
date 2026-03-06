@@ -7,9 +7,10 @@ public class OrderForm {
 	private String scentName;//表示用の名前
 	private String bottleId; // ボトルのID
 	private String bottleName;//ボトルの名前
+	private String postCode;
 	private String address; // 住所
 	private String userName; // 氏名
-	private String message; // 香りへのメッセージ
+	private String phoneNumber;
 
 	public String getScentId() {
 		return scentId;
@@ -51,19 +52,27 @@ public class OrderForm {
 		this.userName = userName;
 	}
 
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
 	public String getScentName() {
 		return scentName;
 	}
 
 	public void setScentName(String scentName) {
 		this.scentName = scentName;
+	}
+
+	public String getPostCode() {
+		return postCode;
+	}
+
+	public void setPostCode(String postCode) {
+		this.postCode = postCode;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 }

@@ -1,0 +1,125 @@
+.admin-container {
+	max-width: 1200px;
+	margin: 50px auto;
+	padding: 20px;
+	font-family: 'Cormorant Garamond', serif;
+}
+
+h1 {
+	font-size: 2.5rem;
+	letter-spacing: 0.5rem;
+	text-transform: uppercase;
+	border-bottom: 2px solid #333;
+	padding-bottom: 20px;
+	margin-bottom: 50px;
+}
+
+.admin-section {
+	margin-bottom: 60px;
+}
+
+.admin-section h2 {
+	font-size: 1.5rem;
+	letter-spacing: 0.2rem;
+	margin-bottom: 20px;
+	color: #555;
+}
+
+/* テーブルのスタイル */
+.admin-table {
+	width: 100%;
+	border-collapse: collapse;
+	background: #fff;
+}
+
+.admin-table th,
+.admin-table td {
+	padding: 15px;
+	border-bottom: 1px solid #eee;
+	text-align: left;
+}
+
+.admin-table th {
+	background: #f9f9f9;
+	font-weight: 500;
+	text-transform: uppercase;
+	font-size: 0.8rem;
+	color: #888;
+}
+
+/* 在庫入力欄 */
+.input-stock {
+	width: 80px;
+	padding: 8px;
+	border: 1px solid #ddd;
+	text-align: center;
+	font-family: sans-serif;
+}
+
+/* 在庫バッジ */
+.status-badge {
+	padding: 4px 12px;
+	font-size: 0.75rem;
+	border-radius: 20px;
+	text-transform: uppercase;
+}
+
+.in-stock {
+	background: #e6f4ea;
+	color: #1e7e34;
+}
+
+.out-of-stock {
+	background: #fce8e6;
+	color: #d93025;
+}
+
+/* 更新ボタン */
+.btn-update {
+	background: #333;
+	color: #fff;
+	border: none;
+	padding: 8px 16px;
+	cursor: pointer;
+	transition: 0.3s;
+}
+
+.btn-update:hover {
+	background: #666;
+}
+
+/* ログイン画面専用 */
+.login-container {
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: #f8f8f8;
+}
+
+.login-box {
+	background: #fff;
+	padding: 50px;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+	width: 100%;
+	max-width: 400px;
+	text-align: center;
+}
+
+.error-msg {
+	color: #d93025;
+	font-size: 0.9rem;
+	margin-bottom: 20px;
+}
+
+.btn-login {
+	width: 100%;
+	background: #333;
+	color: #fff;
+	border: none;
+	padding: 15px;
+	margin-top: 20px;
+	cursor: pointer;
+	letter-spacing: 0.2rem;
+	text-transform: uppercase;
+}
