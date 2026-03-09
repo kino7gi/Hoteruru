@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Order Management</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+	<style>
+		.order-table {
+			width: 100%;
+			border-collapse: collapse;
+			margin-top: 20px;
+		}
+
+		.order-table th,
+		.order-table td {
+			border: 1px solid #ddd;
+			padding: 12px;
+			text-align: left;
+		}
+
+		.order-table th {
+			background-color: #f8f9fa;
+		}
+
+		.status-badge {
+			background: #e1f5fe;
+			color: #01579b;
+			padding: 4px 8px;
+			border-radius: 4px;
+			font-size: 0.8em;
+		}
+	</style>
+</head>
+
+<body>
+	<main style="padding: 20px;">
+		<h2>Order Management List</h2>
+
+		<table class="order-table">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Date</th>
+					<th>Customer Name</th>
+					<th>Scent</th>
+					<th>Bottle</th>
+					<th>Address</th>
+					<th>Phone</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="order : ${orders}">
+					<td th:text="${order.id}">1</td>
+					<td th:text="${#temporals.format(order.orderDate, 'yyyy/MM/dd HH:mm')}">2026/03/09</td>
+					<td th:text="${order.userName}">山田 太郎</td>
+					<td><span class="status-badge" th:text="${order.scentName}">Floral</span></td>
+					<td th:text="${order.bottleName}">Square</td>
+					<td th:text="${'〒' + order.postCode + ' ' + order.address}">住所</td>
+					<td th:text="${order.phoneNumber}">090...</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<div style="margin-top: 20px;">
+			<a th:href="@{/}" class="btn-back">Back to Top</a>
+		</div>
+	</main>
+</body>
+
+</html>

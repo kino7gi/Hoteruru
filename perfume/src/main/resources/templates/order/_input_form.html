@@ -1,25 +1,38 @@
-<section id="inputSection" th:fragment="input_form" class="fade-in">
+<section id="inputSection" th:fragment="input_form" class="fade-in h-adr">
+	<span class="p-country-name" style="display:none;">Japan</span>
+
 	<h2>Shipping Information</h2>
 
+	<input type="hidden" th:field="*{postCode}" id="hiddenPostCode">
+	<input type="hidden" th:field="*{address}" id="hiddenAddress">
+	<input type="hidden" th:field="*{phoneNumber}" id="hiddenPhoneNumber">
+	<input type="hidden" th:field="*{userName}" id="hiddenName">
+
 	<div class="input-group">
-		<label for="postCode">Post Code</label>
-		<input type="text" th:field="*{postCode}" id="postCode" placeholder="000-0000" required>
+		<label for="postCode">Post Code (半角数字 7桁)</label>
+		<input type="text" id="postCode" class="p-postal-code" placeholder="000-0000" pattern="\d{3}-?\d{4}"
+			title="郵便番号は半角数字7桁（ハイフンあり・なし両方可）で入力してください" autocomplete="off" required>
 	</div>
 
 	<div class="input-group">
 		<label for="address">Destination Address</label>
-		<input type="text" th:field="*{address}" id="address" placeholder="住所を入力してください" required>
+		<input type="text" id="address" class="p-region p-locality p-street-address p-extended-address"
+			placeholder="住所が自動入力されます" autocomplete="off" required>
+		<small id="addressHint" style="color: #e74c3c; display: none; margin-top: 5px;">
+			※市区町村まで自動入力されました。続けて<b>番地・建物名</b>を入力してください。
+		</small>
 	</div>
 
 	<div class="input-group">
-		<label for="phoneNumber">Phone Number</label>
-		<input type="tel" th:field="*{phoneNumber}" id="phoneNumber" placeholder="000-0000-0000" required>
+		<label for="phoneNumber">Phone Number (半角数字)</label>
+		<input type="tel" id="phoneNumber" placeholder="09012345678" pattern="\d{10,11}"
+			title="電話番号は半角数字（ハイフンなし）で入力してください" autocomplete="off" required>
 	</div>
 
 	<div class="input-group">
 		<label for="userName">Customer Name</label>
-		<input type="text" th:field="*{userName}" id="userName" placeholder="お名前をご入力ください" required>
+		<input type="text" id="userName" placeholder="お名前をご入力ください" autocomplete="off" required>
 	</div>
 
-	<button type="button" class="btn-preview" onclick="showPreview()">Review Order</button>
+	<button type="button" class="btn-preview" onclick="validateAndPreview()">Review Order</button>
 </section>

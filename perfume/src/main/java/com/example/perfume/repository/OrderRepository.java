@@ -1,15 +1,16 @@
-// src/main/java/com/example/perfume/repository/OrderRepository.java
 package com.example.perfume.repository;
 
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.example.perfume.entity.Order;
 
 @Repository
-public class OrderRepository {
-	// 実際にはここでDB保存（JdbcTemplateやJPA）を行いますが、
-	// 今回はメモリ保持やロギングのみの想定です
-	public void save(Order order) {
-		System.out.println("Order saved: " + order.getTitle());
-	}
+public interface OrderRepository extends JpaRepository<Order, Long> {
+	// これだけで save(), findAll(), deleteById() などがすべて自動で使えるようになります！
+	List<Order> findAllByOrderByOrderDateDesc();
+
+	List<Order> findAllByOrderByIdDesc();
 }

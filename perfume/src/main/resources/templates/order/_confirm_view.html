@@ -4,10 +4,10 @@
 
 		<dl>
 			<dt>Selected Scent</dt>
-			<dd th:text="${orderForm.scentId}">Floral</dd>
+			<dd th:text="${orderForm.scentName}">Floral</dd>
 
 			<dt>Selected Bottle</dt>
-			<dd th:text="${orderForm.bottleId}">Square</dd>
+			<dd th:text="${orderForm.bottleName}">Square</dd>
 
 			<dt>Post Code</dt>
 			<dd id="displayPostCode"></dd>
@@ -20,12 +20,11 @@
 
 			<dt>Customer Name</dt>
 			<dd id="displayName"></dd>
-
 		</dl>
 
 		<div class="preview-actions">
 			<button type="button" class="btn-back" onclick="hidePreview()">Back to edit</button>
-			<button type="submit" form="addressForm" class="btn-submit">Confirm Order</button>
+			<button type="submit" class="btn-submit">Confirm Order</button>
 		</div>
 	</div>
 </section>

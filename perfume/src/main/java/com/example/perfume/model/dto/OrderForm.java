@@ -1,31 +1,44 @@
 package com.example.perfume.model.dto;
 
-// Getter, Setterを自動生成（Lombok使用時）
-public class OrderForm {
+import java.io.Serializable;
 
-	private String scentId; // 香りのID
-	private String scentName;//表示用の名前
-	private String bottleId; // ボトルのID
-	private String bottleName;//ボトルの名前
+public class OrderForm implements Serializable {
+
+	// IDはリポジトリの型に合わせて Long に変更
+	private Long scentId;
+	private Long bottleId;
+
+	private String scentName; // 表示用の名前
+	private String bottleName; // ボトルの名前
 	private String postCode;
 	private String address; // 住所
 	private String userName; // 氏名
 	private String phoneNumber;
 
-	public String getScentId() {
+	// --- Getter / Setter ---
+
+	public Long getScentId() {
 		return scentId;
 	}
 
-	public void setScentId(String scentId) {
+	public void setScentId(Long scentId) {
 		this.scentId = scentId;
 	}
 
-	public String getBottleId() {
+	public Long getBottleId() {
 		return bottleId;
 	}
 
-	public void setBottleId(String bottleId) {
+	public void setBottleId(Long bottleId) {
 		this.bottleId = bottleId;
+	}
+
+	public String getScentName() {
+		return scentName;
+	}
+
+	public void setScentName(String scentName) {
+		this.scentName = scentName;
 	}
 
 	public String getBottleName() {
@@ -34,6 +47,14 @@ public class OrderForm {
 
 	public void setBottleName(String bottleName) {
 		this.bottleName = bottleName;
+	}
+
+	public String getPostCode() {
+		return postCode;
+	}
+
+	public void setPostCode(String postCode) {
+		this.postCode = postCode;
 	}
 
 	public String getAddress() {
@@ -50,22 +71,6 @@ public class OrderForm {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
-	}
-
-	public String getScentName() {
-		return scentName;
-	}
-
-	public void setScentName(String scentName) {
-		this.scentName = scentName;
-	}
-
-	public String getPostCode() {
-		return postCode;
-	}
-
-	public void setPostCode(String postCode) {
-		this.postCode = postCode;
 	}
 
 	public String getPhoneNumber() {
