@@ -1,32 +1,47 @@
-// 調合画面用js (mix.js)
-
+/**
+ * 調合プレビューの更新処理
+ */
 function updatePreview() {
 	// --- 1. ボトルのプレビュー更新 ---
-	// 選択されている「ボトル」のラジオボタンを取得
+	// Thymeleafの th:field="*{bottleId}" は name="bottleId" としてレンダリングされます
 	const selectedBottle = document.querySelector('input[name="bottleId"]:checked');
 	const bottleImgElement = document.getElementById('img-bottle');
 
 	if (selectedBottle && bottleImgElement) {
-		// data-bottle属性がある場合のみパスを取得して反映
+		// th:data-bottle で設定したパスを取得
 		const bottlePath = selectedBottle.getAttribute('data-bottle');
+
 		if (bottlePath) {
+			// 画像を差し替え
 			bottleImgElement.src = bottlePath;
-			console.log("Bottle updated to: " + bottlePath);
+
+			// フェード演出を入れる（CSSに .fade-in クラスがある場合）
+			bottleImgElement.classList.remove('is-visible');
+			requestAnimationFrame(() => {
+				bottleImgElement.classList.add('is-visible');
+			});
 		}
 	}
 
-	// --- 2. 香りの選択状態（画像変更なし） ---
-	// もし将来的に香りの選択によって何か（文字の色など）を変えたい場合はここに書きます。
+	// --- 2. 香りの選択状態のログ（デバッグ用） ---
 	const selectedScent = document.querySelector('input[name="scentId"]:checked');
 	if (selectedScent) {
-		console.log("Selected scent: " + selectedScent.value);
+		// ラジオボタンの隣にある span テキストを取得して表示
+		const scentName = selectedScent.nextElementSibling ? selectedScent.nextElementSibling.innerText : selectedScent.value;
+		console.log("Selected Scent ID:", selectedScent.value, "Name:", scentName);
 	}
 }
 
 /**
- * ページ読み込み時にも一度実行して初期状態を反映
- * ※Thymeleafで最初からcheckedが入っている場合、その画像を表示させるため
+ * ページ読み込み時の初期化
  */
 document.addEventListener("DOMContentLoaded", () => {
+	// 初期状態で選択されているものがあれば反映
 	updatePreview();
+
+	// 全てのラジオボタンにイベントリスナーを一括設定（HTML側のonchange漏れ対策）
+	const allRadios = document.querySelectorAll('input[type="radio"]');
+	allRadios.forEach(radio => {
+		radio.addEventListener('change', updatePreview);
+	});
 });

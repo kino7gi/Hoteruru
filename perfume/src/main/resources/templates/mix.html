@@ -2,8 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+	<th:block th:replace="~{layout/header :: common_head}"></th:block>
 
-	<head th:replace="~{layout/header :: common_head}"></head>
 	<link rel="stylesheet" th:href="@{/css/mix.css}">
 </head>
 
@@ -11,29 +11,18 @@
 	<main class="mix-container">
 		<section class="preview-section fade-in">
 			<div class="perfume-visual">
-				<img id="img-bottle" th:src="@{/images/IMG_0290.JPG}" alt="Bottle" style="z-index: 2;">
+				<img id="img-bottle" th:src="@{/images/no-image.jpg}" alt="Bottle" style="z-index: 2;">
 			</div>
 		</section>
 
 		<form th:action="@{/order}" th:object="${orderForm}" method="post" class="mix-form">
+
 			<fieldset class="selection-group">
 				<legend>01. Select Scent</legend>
 				<div class="options">
-					<label>
-						<input type="radio" th:field="*{scentId}" value="rose" onchange="updatePreview()">
-						<span>ROSE</span>
-					</label>
-					<label>
-						<input type="radio" th:field="*{scentId}" value="woody" onchange="updatePreview()">
-						<span>WOODY</span>
-					</label>
-					<label>
-						<input type="radio" th:field="*{scentId}" value="citrus" onchange="updatePreview()">
-						<span>CITRUS</span>
-					</label>
-					<label>
-						<input type="radio" th:field="*{scentId}" value="lavender" onchange="updatePreview()">
-						<span>LAVENDER</span>
+					<label th:each="scent : ${scents}">
+						<input type="radio" th:field="*{scentId}" th:value="${scent.id}" onchange="updatePreview()">
+						<span th:text="${#strings.toUpperCase(scent.name)}">SCENT NAME</span>
 					</label>
 				</div>
 			</fieldset>
@@ -41,15 +30,11 @@
 			<fieldset class="selection-group fade-in">
 				<legend>02. Select Bottle</legend>
 				<div class="options">
-					<label>
-						<input type="radio" th:field="*{bottleId}" value="square" data-bottle="/images/IMG_0290.JPG"
+					<label th:each="bottle : ${bottles}">
+						<input type="radio" th:field="*{bottleId}" th:value="${bottle.id}"
+							th:data-bottle="${bottle.imageUrl != null} ? @{/images/{name}(name=${bottle.imageUrl})} : @{/images/no-image.jpg}"
 							onchange="updatePreview()">
-						<span>SQUARE</span>
-					</label>
-					<label>
-						<input type="radio" th:field="*{bottleId}" value="round" data-bottle="/images/IMG_0289.JPG"
-							onchange="updatePreview()">
-						<span>ROUND</span>
+						<span th:text="${#strings.toUpperCase(bottle.name)}">BOTTLE NAME</span>
 					</label>
 				</div>
 			</fieldset>

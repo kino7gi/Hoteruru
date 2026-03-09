@@ -13,27 +13,44 @@
 			<table class="admin-table">
 				<thead>
 					<tr>
-						<th>Name</th>
-						<th>Stock Count</th>
-						<th>Status</th>
+						<th>Scent Name</th>
+						<th>Description</th>
+						<th>Stock</th>
+						<th>Image</th>
 						<th>Action</th>
 					</tr>
 				</thead>
 				<tbody>
+
 					<tr th:each="scent : ${scents}">
 						<td th:text="${scent.name}">Rose</td>
 						<td>
-							<input type="number" th:value="${scent.stock}" class="input-stock">
+							<textarea class="input-desc scent-description" th:text="${scent.description}"></textarea>
 						</td>
 						<td>
-							<span class="status-badge"
-								th:classappend="${scent.stock > 0 ? 'in-stock' : 'out-of-stock'}">
-								[[${scent.stock > 0 ? 'In Stock' : 'Out of Stock'}]]
-							</span>
+							<input type="number" th:value="${scent.stock}" class="input-stock scent-stock">
 						</td>
-						<td><button class="btn-update">Update</button></td>
-					</tr>
+						<td>
+							<div class="admin-thumb-container">
+								<img th:src="${scent.imageUrl != null} ? @{/images/{name}(name=${scent.imageUrl})} : @{/images/no-image.jpg}"
+									alt="photo" class="admin-thumb">
+							</div>
+						</td>
+						<td class="admin-actions">
+							<button class="btn-update"
+								th:onclick="|updateScentStock(${scent.id}, this)|">Update</button>
+							<button class="btn-delete" th:onclick="|deleteScent(${scent.id})|">🗑</button>
+						</td>
 				</tbody>
+				<tfoot>
+					<tr class="add-row">
+						<td><input type="text" id="newScentName" placeholder="New Scent Name"></td>
+						<td><textarea id="newScentDescription" placeholder="香りの説明を入力"></textarea></td>
+						<td><input type="number" id="newScentStock" value="0"></td>
+						<td><input type="file" id="newScentImage"></td>
+						<td><button class="btn-add" onclick="addScent()">+ Add New</button></td>
+					</tr>
+				</tfoot>
 			</table>
 		</section>
 
@@ -43,22 +60,44 @@
 				<thead>
 					<tr>
 						<th>Bottle Type</th>
-						<th>Stock Count</th>
+						<th>Capacity</th>
+						<th>Stock</th>
+						<th>Image</th>
 						<th>Action</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr th:each="bottle : ${bottles}">
 						<td th:text="${bottle.name}">Square</td>
+						<td th:text="${bottle.capacity}">50ml</td>
 						<td>
-							<input type="number" th:value="${bottle.stock}" class="input-stock">
+							<input type="number" th:value="${bottle.stock}" class="input-stock bottle-stock">
 						</td>
-						<td><button class="btn-update">Update</button></td>
+						<td>
+							<img th:src="${bottle.imageUrl != null} ? @{/images/{name}(name=${bottle.imageUrl})} : @{/images/no-image.jpg}"
+								alt="photo" class="admin-thumb">
+						</td>
+						<td class="admin-actions">
+							<button class="btn-update"
+								th:onclick="|updateBottleStock(${bottle.id}, this)|">Update</button>
+							<button class="btn-delete" th:onclick="|deleteBottle(${bottle.id})|">🗑</button>
+						</td>
 					</tr>
 				</tbody>
+				<tfoot>
+					<tr class="add-row">
+						<td><input type="text" id="newBottleName" placeholder="Shape Name"></td>
+						<td><input type="text" id="newBottleCapacity" placeholder="50ml"></td>
+						<td><input type="number" id="newBottleStock" value="0"></td>
+						<td><input type="file" id="newBottleImage"></td>
+						<td><button class="btn-add" onclick="addBottle()">+ Add New</button></td>
+					</tr>
+				</tfoot>
 			</table>
 		</section>
 	</main>
+
+	<script th:src="@{/js/admin.js}"></script>
 </body>
 
 </html>

@@ -13,53 +13,23 @@
 			<h1>Our Fragrance</h1>
 			<p>記憶を呼び起こす、あなただけの香り。</p>
 		</section>
-
 		<div class="perfume-list">
-			<section class="perfume-item fade-in row-reverse">
-				<div class="img-wrapper" onclick="showModal('Rose', '華やかな花の香り。時代を超えて愛される、エレガントで深い赤をイメージした香りです。')">
-					<img th:src="@{/images/IMG_0292.JPG}" alt="Rose">
-				</div>
-				<div class="text-wrapper">
-					<span class="scent-number">01</span>
-					<h2>Rose</h2>
-					<p>華やかな花の香り</p>
-				</div>
-			</section>
+			<section th:each="scent, iterStat : ${scents}" class="perfume-item fade-in"
+				th:classappend="${iterStat.odd} ? 'row-reverse' : ''">
 
-			<section class="perfume-item fade-in">
-				<div class="img-wrapper" onclick="showModal('Woody', '落ち着いた森の香り。静寂な夜の森を歩くような、深く穏やかなウッディノート。')">
-					<img th:src="@{/images/IMG_0296.JPG}" alt="Woody">
-				</div>
-				<div class="text-wrapper">
-					<span class="scent-number">02</span>
-					<h2>Woody</h2>
-					<p>落ち着いた森の香り</p>
-				</div>
-			</section>
+				<div class="img-wrapper modal-trigger" th:data-name="${scent.name}"
+					th:data-description="${scent.description}">
 
-			<section class="perfume-item fade-in row-reverse">
-				<div class="img-wrapper" onclick="showModal('Citrus', '爽やかな果実の香り。太陽の光を浴びた果実のように、心弾むフレッシュな体験。')">
-					<img th:src="@{/images/IMG_0293.JPG}" alt="Citrus">
+					<img th:src="${scent.imageUrl != null} ? @{/images/{name}(name=${scent.imageUrl})} : @{/images/no-image.jpg}"
+						th:alt="${scent.name}">
 				</div>
-				<div class="text-wrapper">
-					<span class="scent-number">03</span>
-					<h2>Citrus</h2>
-					<p>爽やかな果実の香り</p>
-				</div>
-			</section>
 
-			<section class="perfume-item fade-in">
-				<div class="img-wrapper" onclick="showModal('Lavender', '凛とした花の香り。心地よい眠りを誘うような、柔らかく清涼感のあるフローラル。')">
-					<img th:src="@{/images/IMG_0295.JPG}" alt="Lavender">
-				</div>
 				<div class="text-wrapper">
-					<span class="scent-number">04</span>
-					<h2>Lavender</h2>
-					<p>凛とした花の香り</p>
+					<span class="scent-number" th:text="${#numbers.formatInteger(iterStat.count, 2)}">01</span>
+					<h2 th:text="${scent.name}">Scent Name</h2>
 				</div>
 			</section>
 		</div>
-
 		<nav class="navigation-area fade-in">
 			<a th:href="@{/mix}" class="btn-next">香りを調合しに行く</a>
 		</nav>
