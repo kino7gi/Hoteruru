@@ -136,6 +136,6 @@ document.addEventListener('DOMContentLoaded', () => {
 					validateAndPreview();
 				}
 			}
-		});
+		}, { capture: true });
 	}
 });

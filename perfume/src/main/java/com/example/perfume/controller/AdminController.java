@@ -44,30 +44,13 @@ public class AdminController {
 	@Autowired
 	private BottleRepository bottleRepository;
 
-	// ログイン画面を表示
+	// --- 認証系 ---
+
 	@GetMapping("/login")
 	public String loginPage() {
 		return "admin/login";
 	}
 
-	// 注文一覧を表示
-	// クラスに /admin がついているので、ここは "/orders" だけでOK
-	@GetMapping("/orders")
-	public String listOrders(HttpSession session, Model model) {
-		// セッションチェック（ログインしていない場合はログイン画面へ）
-		if (session.getAttribute("isLoggedIn") == null) {
-			return "redirect:/admin/login";
-		}
-
-		// DBからすべての注文を「IDの降順（新しい順）」で取得
-		// Repositoryに findAllByOrderByIdDesc() を作成しておく必要があります
-		List<Order> orders = orderRepository.findAllByOrderByIdDesc();
-
-		model.addAttribute("orders", orders);
-		return "admin/order_list";
-	}
-
-	// ログイン処理
 	@PostMapping("/login")
 	public String login(@RequestParam String userId,
 			@RequestParam String password,
@@ -86,19 +69,19 @@ public class AdminController {
 				});
 	}
 
-	// ログアウト処理
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
 		return "redirect:/admin/login";
 	}
 
-	// ダッシュボードに一覧を表示
+	// --- ダッシュボード・一覧系 ---
+
 	@GetMapping("/dashboard")
 	public String dashboard(HttpSession session, Model model) {
-		if (session.getAttribute("isLoggedIn") == null)
+		if (session.getAttribute("isLoggedIn") == null) {
 			return "redirect:/admin/login";
-
+		}
 		model.addAttribute("scents", scentRepository.findAll());
 		model.addAttribute("bottles", bottleRepository.findAll());
 		return "admin/dashboard";
@@ -109,32 +92,24 @@ public class AdminController {
 		if (session.getAttribute("isLoggedIn") == null) {
 			return "redirect:/admin/login";
 		}
-
-		// Repositoryのメソッド名に合わせて修正
-		// OrderRepositoryに findAllByOrderByIdDesc() があるか確認してください
+		// メモ: OrderRepositoryに List<Order> findAllByOrderByIdDesc() の定義が必要です
 		List<Order> orders = orderRepository.findAllByOrderByIdDesc();
-
 		model.addAttribute("orders", orders);
 		return "admin/order_list";
 	}
 
-	/**
-	 * 注文削除処理
-	 * HTML側のフォームから送られる ID を受け取って削除します
-	 */
+	// --- 注文管理 ---
+
 	@PostMapping("/orders/delete/{id}")
 	public String deleteOrder(@PathVariable("id") Long id, HttpSession session) {
-		// セッションチェック
 		if (session.getAttribute("isLoggedIn") == null) {
 			return "redirect:/admin/login";
 		}
-
-		// IDを指定して削除
 		orderRepository.deleteById(id);
-
-		// 削除後は一覧画面にリダイレクト
 		return "redirect:/admin/orders";
 	}
+
+	// --- 在庫・マスタ管理 (API形式) ---
 
 	@PostMapping("/update-scent-stock")
 	@ResponseBody
@@ -179,6 +154,7 @@ public class AdminController {
 
 		if (image != null && !image.isEmpty()) {
 			String fileName = image.getOriginalFilename();
+			// 実行環境によってはパスの指定に注意が必要です
 			Path uploadPath = Paths.get("src/main/resources/static/images/" + fileName);
 			Files.copy(image.getInputStream(), uploadPath, StandardCopyOption.REPLACE_EXISTING);
 			newScent.setImageUrl(fileName);
