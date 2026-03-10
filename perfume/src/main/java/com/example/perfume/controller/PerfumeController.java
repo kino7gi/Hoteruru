@@ -17,12 +17,21 @@ import com.example.perfume.repository.BottleRepository;
 import com.example.perfume.repository.OrderRepository;
 import com.example.perfume.repository.ScentRepository;
 import com.example.perfume.service.ScentService;
+// --- ここからStripe関連のインポートを追加 ---
+import com.stripe.Stripe;
+import com.stripe.model.checkout.Session;
+import com.stripe.param.checkout.SessionCreateParams;
+// --- ここまで ---
 
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-@SessionAttributes("orderForm") // セッションで注文情報を保持
+@SessionAttributes("orderForm")
 public class PerfumeController {
+
+	// ここにあなたのシークレットキーを入れます
+	private String stripeApiKey = "sk_test_51SyiNdAKF64NSnzIzrjQQaiTGtfKIIbcCjqibz7A7TaKiKtSO3awXfJDD3q8mDHyaLW8z3FAc8aMH1aS8fGUD7AQ00moNaLO5s";
 
 	@Autowired
 	private ScentService scentService;
@@ -36,7 +45,12 @@ public class PerfumeController {
 	@Autowired
 	private OrderRepository orderRepository;
 
-	// 最初に注文フォームを初期化
+	@PostConstruct
+	public void init() {
+		// これでStripeライブラリが使えるようになります
+		Stripe.apiKey = stripeApiKey;
+	}
+
 	@ModelAttribute("orderForm")
 	public OrderForm setUpForm() {
 		return new OrderForm();
@@ -49,79 +63,89 @@ public class PerfumeController {
 
 	@GetMapping("/intro")
 	public String showIntro(Model model) {
-		List<Scent> scents = scentService.findAll(); // DBから全件取得
+		List<Scent> scents = scentService.findAll();
 		model.addAttribute("scents", scents);
 		return "intro";
 	}
 
 	@GetMapping("/mix")
 	public String showMixPage(Model model) {
-		// DBから最新のリストを取得
 		model.addAttribute("scents", scentRepository.findAll());
 		model.addAttribute("bottles", bottleRepository.findAll());
-
-		// 既存のOrderForm初期化（もし @ModelAttribute でやっていなければ）
 		if (!model.containsAttribute("orderForm")) {
 			model.addAttribute("orderForm", new OrderForm());
 		}
-
 		return "mix";
 	}
 
 	@PostMapping("/order")
 	public String confirmOrder(@ModelAttribute OrderForm orderForm, Model model) {
-
-		// 香りのID(5) を使って、名前（例：Rose）を探してセットする
 		if (orderForm.getScentId() != null) {
 			scentRepository.findById(orderForm.getScentId())
 					.ifPresent(scent -> orderForm.setScentName(scent.getName()));
 		}
-
-		// ボトルのID(2) を使って、名前（例：Round）を探してセットする
 		if (orderForm.getBottleId() != null) {
 			bottleRepository.findById(orderForm.getBottleId())
 					.ifPresent(bottle -> orderForm.setBottleName(bottle.getName()));
 		}
-
-		// 名前がセットされた orderForm を画面に渡す
 		model.addAttribute("orderForm", orderForm);
 		return "order";
 	}
 
-	// 5. 完了画面へ
 	@PostMapping("/complete")
-	public String completeOrder(@ModelAttribute OrderForm orderForm, HttpSession session) {
+	public String redirectToStripe(@ModelAttribute("orderForm") OrderForm orderForm) {
+		// 決済セッションの設定
+		SessionCreateParams params = SessionCreateParams.builder()
+				.addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
+				.setMode(SessionCreateParams.Mode.PAYMENT)
+				.setSuccessUrl("http://localhost:9000/complete")
+				.setCancelUrl("http://localhost:9000/mix")
+				.addLineItem(SessionCreateParams.LineItem.builder()
+						.setQuantity(1L)
+						.setPriceData(SessionCreateParams.LineItem.PriceData.builder()
+								.setCurrency("jpy")
+								.setUnitAmount(3000L)
+								.setProductData(SessionCreateParams.LineItem.PriceData.ProductData.builder()
+										.setName("Original Perfume: "
+												+ (orderForm.getScentName() != null ? orderForm.getScentName()
+														: "Custom Blend"))
+										.build())
+								.build())
+						.build())
+				.build();
 
-		// 1. Orderエンティティを作成し、フォームの内容をコピーする
+		try {
+			// ここでStripeの通信が発生します
+			Session session = Session.create(params);
+			return "redirect:" + session.getUrl();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "redirect:/mix";
+		}
+	}
+
+	@GetMapping("/complete")
+	public String completeOrder(@ModelAttribute("orderForm") OrderForm orderForm, HttpSession session, Model model) {
+		// 直接URLを叩かれた時のガード
+		if (orderForm == null || orderForm.getScentName() == null) {
+			return "redirect:/";
+		}
+
 		Order order = new Order();
-
-		// ユーザー情報のコピー
 		order.setUserName(orderForm.getUserName());
 		order.setPostCode(orderForm.getPostCode());
 		order.setAddress(orderForm.getAddress());
 		order.setPhoneNumber(orderForm.getPhoneNumber());
-
-		// 選択された香りとボトルの「名前」をコピー
-		// ※IDではなく名前を保存することで、将来商品名が変わっても注文当時の記録が残ります
 		order.setScentName(orderForm.getScentName());
 		order.setBottleName(orderForm.getBottleName());
 
-		// 2. データベースへ保存
-		// リポジトリのインターフェース経由で、Spring JPAがINSERT文を実行してくれます
 		orderRepository.save(order);
 
-		// 3. セッションから注文情報を削除（二重送信や戻った時の不具合防止）
+		model.addAttribute("orderData", orderForm);
+
+		// セッションをクリア
 		session.removeAttribute("orderForm");
 
-		// 4. complete.html へリダイレクト（リロード対策）
-		return "redirect:/complete";
-	}
-
-	/**
-	 * 完了画面の表示
-	 */
-	@GetMapping("/complete")
-	public String showCompletePage() {
 		return "complete";
 	}
 }
