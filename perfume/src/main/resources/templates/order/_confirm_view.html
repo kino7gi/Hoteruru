@@ -4,7 +4,13 @@
 
 		<dl>
 			<dt>Selected Scent</dt>
-			<dd th:text="${orderForm.scentName}">Floral</dd>
+			<dd>
+				<span th:each="name, iterStat : ${orderForm.scentNames}">
+					<span th:text="${name}">Floral</span>
+					<th:block th:if="${!iterStat.last}"> / </th:block>
+				</span>
+				<span th:if="${orderForm.scentNames == null || orderForm.scentNames.empty}">No Scent Selected</span>
+			</dd>
 
 			<dt>Selected Bottle</dt>
 			<dd th:text="${orderForm.bottleName}">Square</dd>

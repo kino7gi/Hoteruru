@@ -3,6 +3,12 @@
 
 	<h2>Shipping Information</h2>
 
+	<th:block th:each="id : *{scentIds}">
+		<input type="hidden" name="scentIds" th:value="${id}">
+	</th:block>
+
+	<input type="hidden" th:field="*{bottleId}">
+
 	<input type="hidden" th:field="*{postCode}" id="hiddenPostCode">
 	<input type="hidden" th:field="*{address}" id="hiddenAddress">
 	<input type="hidden" th:field="*{phoneNumber}" id="hiddenPhoneNumber">

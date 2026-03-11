@@ -1,28 +1,32 @@
 package com.example.perfume.model.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class OrderForm implements Serializable {
 
-	// IDはリポジトリの型に合わせて Long に変更
-	private Long scentId;
+	// 1. 香りのIDを複数受け取れるように List<Long> に変更
+	private List<Long> scentIds;
 	private Long bottleId;
 
-	private String scentName; // 表示用の名前
-	private String bottleName; // ボトルの名前
+	// 2. 表示用の名前リスト（変数名を Getter/Setter と一致させる）
+	private List<String> scentNames;
+	private String bottleName;
+
 	private String postCode;
-	private String address; // 住所
-	private String userName; // 氏名
+	private String address;
+	private String userName;
 	private String phoneNumber;
 
 	// --- Getter / Setter ---
 
-	public Long getScentId() {
-		return scentId;
+	// 香りのIDリスト用
+	public List<Long> getScentIds() {
+		return scentIds;
 	}
 
-	public void setScentId(Long scentId) {
-		this.scentId = scentId;
+	public void setScentIds(List<Long> scentIds) {
+		this.scentIds = scentIds;
 	}
 
 	public Long getBottleId() {
@@ -33,12 +37,13 @@ public class OrderForm implements Serializable {
 		this.bottleId = bottleId;
 	}
 
-	public String getScentName() {
-		return scentName;
+	// 香りの名前リスト用（変数名 scentNames に合わせました）
+	public List<String> getScentNames() {
+		return scentNames;
 	}
 
-	public void setScentName(String scentName) {
-		this.scentName = scentName;
+	public void setScentNames(List<String> scentNames) {
+		this.scentNames = scentNames;
 	}
 
 	public String getBottleName() {

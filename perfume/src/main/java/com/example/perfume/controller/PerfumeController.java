@@ -1,5 +1,6 @@
 package com.example.perfume.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,9 @@ import com.example.perfume.repository.BottleRepository;
 import com.example.perfume.repository.OrderRepository;
 import com.example.perfume.repository.ScentRepository;
 import com.example.perfume.service.ScentService;
-// --- ここからStripe関連のインポートを追加 ---
 import com.stripe.Stripe;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
-// --- ここまで ---
 
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpSession;
@@ -30,7 +29,6 @@ import jakarta.servlet.http.HttpSession;
 @SessionAttributes("orderForm")
 public class PerfumeController {
 
-	// ここにあなたのシークレットキーを入れます
 	private String stripeApiKey = "sk_test_51SyiNdAKF64NSnzIzrjQQaiTGtfKIIbcCjqibz7A7TaKiKtSO3awXfJDD3q8mDHyaLW8z3FAc8aMH1aS8fGUD7AQ00moNaLO5s";
 
 	@Autowired
@@ -47,7 +45,6 @@ public class PerfumeController {
 
 	@PostConstruct
 	public void init() {
-		// これでStripeライブラリが使えるようになります
 		Stripe.apiKey = stripeApiKey;
 	}
 
@@ -80,10 +77,16 @@ public class PerfumeController {
 
 	@PostMapping("/order")
 	public String confirmOrder(@ModelAttribute OrderForm orderForm, Model model) {
-		if (orderForm.getScentId() != null) {
-			scentRepository.findById(orderForm.getScentId())
-					.ifPresent(scent -> orderForm.setScentName(scent.getName()));
+		// --- 修正箇所：香りの複数IDから名前のリストを取得 ---
+		if (orderForm.getScentIds() != null && !orderForm.getScentIds().isEmpty()) {
+			List<String> names = new ArrayList<>();
+			for (Long id : orderForm.getScentIds()) {
+				scentRepository.findById(id).ifPresent(scent -> names.add(scent.getName()));
+			}
+			orderForm.setScentNames(names);
 		}
+
+		// ボトルの処理は単体なのでそのまま
 		if (orderForm.getBottleId() != null) {
 			bottleRepository.findById(orderForm.getBottleId())
 					.ifPresent(bottle -> orderForm.setBottleName(bottle.getName()));
@@ -94,7 +97,11 @@ public class PerfumeController {
 
 	@PostMapping("/complete")
 	public String redirectToStripe(@ModelAttribute("orderForm") OrderForm orderForm) {
-		// 決済セッションの設定
+		// --- 修正箇所：Stripe表示用にリストを文字列に結合 ---
+		String joinedNames = (orderForm.getScentNames() != null)
+				? String.join(" / ", orderForm.getScentNames())
+				: "Custom Blend";
+
 		SessionCreateParams params = SessionCreateParams.builder()
 				.addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
 				.setMode(SessionCreateParams.Mode.PAYMENT)
@@ -106,16 +113,13 @@ public class PerfumeController {
 								.setCurrency("jpy")
 								.setUnitAmount(3000L)
 								.setProductData(SessionCreateParams.LineItem.PriceData.ProductData.builder()
-										.setName("Original Perfume: "
-												+ (orderForm.getScentName() != null ? orderForm.getScentName()
-														: "Custom Blend"))
+										.setName("Original Perfume: " + joinedNames)
 										.build())
 								.build())
 						.build())
 				.build();
 
 		try {
-			// ここでStripeの通信が発生します
 			Session session = Session.create(params);
 			return "redirect:" + session.getUrl();
 		} catch (Exception e) {
@@ -126,8 +130,8 @@ public class PerfumeController {
 
 	@GetMapping("/complete")
 	public String completeOrder(@ModelAttribute("orderForm") OrderForm orderForm, HttpSession session, Model model) {
-		// 直接URLを叩かれた時のガード
-		if (orderForm == null || orderForm.getScentName() == null) {
+		// --- 修正箇所：ガード条件を複数形に変更 ---
+		if (orderForm == null || orderForm.getScentNames() == null) {
 			return "redirect:/";
 		}
 
@@ -136,16 +140,19 @@ public class PerfumeController {
 		order.setPostCode(orderForm.getPostCode());
 		order.setAddress(orderForm.getAddress());
 		order.setPhoneNumber(orderForm.getPhoneNumber());
-		order.setScentName(orderForm.getScentName());
+
+		// --- 修正箇所：DB保存用に名前を結合 ---
+		String joinedNames = String.join(" / ", orderForm.getScentNames());
+		order.setScentName(joinedNames);
+
 		order.setBottleName(orderForm.getBottleName());
 
 		orderRepository.save(order);
 
+		// 完了画面表示用にデータをセット
 		model.addAttribute("orderData", orderForm);
 
-		// セッションをクリア
 		session.removeAttribute("orderForm");
-
 		return "complete";
 	}
 }

@@ -3,19 +3,13 @@
  */
 function updatePreview() {
 	// --- 1. ボトルのプレビュー更新 ---
-	// Thymeleafの th:field="*{bottleId}" は name="bottleId" としてレンダリングされます
 	const selectedBottle = document.querySelector('input[name="bottleId"]:checked');
 	const bottleImgElement = document.getElementById('img-bottle');
 
 	if (selectedBottle && bottleImgElement) {
-		// th:data-bottle で設定したパスを取得
 		const bottlePath = selectedBottle.getAttribute('data-bottle');
-
 		if (bottlePath) {
-			// 画像を差し替え
 			bottleImgElement.src = bottlePath;
-
-			// フェード演出を入れる（CSSに .fade-in クラスがある場合）
 			bottleImgElement.classList.remove('is-visible');
 			requestAnimationFrame(() => {
 				bottleImgElement.classList.add('is-visible');
@@ -23,13 +17,39 @@ function updatePreview() {
 		}
 	}
 
-	// --- 2. 香りの選択状態のログ（デバッグ用） ---
-	const selectedScent = document.querySelector('input[name="scentId"]:checked');
-	if (selectedScent) {
-		// ラジオボタンの隣にある span テキストを取得して表示
-		const scentName = selectedScent.nextElementSibling ? selectedScent.nextElementSibling.innerText : selectedScent.value;
-		console.log("Selected Scent ID:", selectedScent.value, "Name:", scentName);
+	// --- 2. 香りの選択状態の取得（複数対応） ---
+	// name="scentIds" のチェックボックスのうち、チェックがついているものをすべて取得
+	const selectedScents = document.querySelectorAll('input[name="scentIds"]:checked');
+
+	if (selectedScents.length > 0) {
+		const selectedData = Array.from(selectedScents).map(scent => {
+			return {
+				id: scent.value,
+				name: scent.nextElementSibling ? scent.nextElementSibling.innerText : scent.value
+			};
+		});
+
+		// デバッグ用にコンソール表示
+		console.log("Selected Scents:", selectedData);
+
+		// 必要であれば、ここで「2つ選ばれたら特別なエフェクトを出す」などの処理を追加できます
 	}
+}
+
+/**
+ * 香りの選択制限（2つまで）
+ */
+function handleScentSelection(checkbox) {
+	const selectedScents = document.querySelectorAll('input[name="scentIds"]:checked');
+
+	if (selectedScents.length > 2) {
+		checkbox.checked = false;
+		alert("香りは2種類までしか選べません。");
+		return;
+	}
+
+	// プレビュー更新を呼ぶ
+	updatePreview();
 }
 
 /**
@@ -39,9 +59,17 @@ document.addEventListener("DOMContentLoaded", () => {
 	// 初期状態で選択されているものがあれば反映
 	updatePreview();
 
-	// 全てのラジオボタンにイベントリスナーを一括設定（HTML側のonchange漏れ対策）
-	const allRadios = document.querySelectorAll('input[type="radio"]');
-	allRadios.forEach(radio => {
+	// ボトルのラジオボタンにイベントリスナーを設定
+	const bottleRadios = document.querySelectorAll('input[name="bottleId"]');
+	bottleRadios.forEach(radio => {
 		radio.addEventListener('change', updatePreview);
+	});
+
+	// 香りのチェックボックスにイベントリスナーを設定
+	const scentCheckboxes = document.querySelectorAll('input[name="scentIds"]');
+	scentCheckboxes.forEach(checkbox => {
+		checkbox.addEventListener('change', function() {
+			handleScentSelection(this);
+		});
 	});
 });

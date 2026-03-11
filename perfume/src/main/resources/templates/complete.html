@@ -14,7 +14,13 @@
 		<section class="order-summary fade-in">
 			<h3>Order Details</h3>
 			<div class="summary-box">
-				<p>香り：<span th:text="${orderForm.scentName}">シトラス</span></p>
+				<p>
+					香り：
+					<span th:each="name, iterStat : ${orderForm.scentNames}">
+						<span th:text="${name}">シトラス</span>
+						<th:block th:if="${!iterStat.last}"> / </th:block>
+					</span>
+				</p>
 				<p>ボトル：<span th:text="${orderForm.bottleName}">スクエア</span></p>
 			</div>
 		</section>

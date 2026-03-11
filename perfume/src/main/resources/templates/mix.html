@@ -18,10 +18,11 @@
 		<form th:action="@{/order}" th:object="${orderForm}" method="post" class="mix-form">
 
 			<fieldset class="selection-group">
-				<legend>01. Select Scent</legend>
+				<legend>01. Select Scents (Up to 2)</legend>
 				<div class="options">
 					<label th:each="scent : ${scents}">
-						<input type="radio" th:field="*{scentId}" th:value="${scent.id}" onchange="updatePreview()">
+						<input type="checkbox" name="scentIds" th:value="${scent.id}" class="scent-checkbox"
+							onchange="handleScentSelection(this)">
 						<span th:text="${#strings.toUpperCase(scent.name)}">SCENT NAME</span>
 					</label>
 				</div>
@@ -47,6 +48,25 @@
 
 	<script th:src="@{/js/mix.js}"></script>
 	<script th:src="@{/js/script.js}"></script>
+
+	<script>
+		function handleScentSelection(checkbox) {
+			const checkboxes = document.querySelectorAll('.scent-checkbox');
+			const checkedCount = Array.from(checkboxes).filter(c => c.checked).length;
+
+			// 2種類を超えて選ぼうとした場合
+			if (checkedCount > 2) {
+				checkbox.checked = false;
+				alert("香りは2種類までしか選べません。");
+				return;
+			}
+
+			// 既存のプレビュー更新機能を呼び出す
+			if (typeof updatePreview === 'function') {
+				updatePreview();
+			}
+		}
+	</script>
 </body>
 
 </html>
